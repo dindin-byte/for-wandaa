@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catatan Spesial Buat Wanda</title>
-    <!-- Font Tulisan Tangan dari Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
     
     <style>
@@ -14,20 +13,15 @@
             margin: 0; display: flex; justify-content: center; align-items: center;
             height: 100vh; background-color: #fce4ec;
             font-family: 'Patrick Hand', cursive; 
-            padding-left: 300px;
-            overflow: hidden; 
+            overflow: hidden; /* Mencegah layar bisa di-scroll / tergeser */
+            /* padding-left: 300px; SUDAH DIHAPUS AGAR RAPI DI HP */
         }
 
         /* --- Animasi Background (Bintang Melayang) --- */
         .floating-star {
-            position: absolute;
-            bottom: -10%;
-            color: #ffeb3b; 
-            font-size: 24px;
-            animation: floatUp linear infinite;
-            opacity: 0.5; 
-            z-index: 0;
-            pointer-events: none;
+            position: absolute; bottom: -10%; color: #ffeb3b; 
+            font-size: 24px; animation: floatUp linear infinite;
+            opacity: 0.5; z-index: 0; pointer-events: none;
         }
         @keyframes floatUp {
             0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
@@ -35,7 +29,19 @@
         }
 
         /* --- Desain Buku & Kertas --- */
-        .book { position: relative; width: 350px; height: 450px; perspective: 1500px; z-index: 10; }
+        .book { 
+            position: relative; width: 350px; height: 450px; perspective: 1500px; z-index: 10; 
+            /* Menggeser buku sedikit ke kanan agar pas dibuka posisinya persis di tengah */
+            transform: translateX(175px); 
+        }
+
+        /* --- PENGATURAN KHUSUS LAYAR HP (RESPONSIVE) --- */
+        @media (max-width: 768px) {
+            .book {
+                /* Skala diperkecil jadi 45% agar 2 halaman muat di layar HP kecil */
+                transform: translateX(78px) scale(0.45); 
+            }
+        }
 
         .paper {
             position: absolute; width: 100%; height: 100%; top: 0; left: 0;
@@ -131,9 +137,7 @@
             <div class="back">
                 <h3>Terima Kasih ✨</h3>
                 
-                <!-- Efek Foto Polaroid -->
                 <div class="polaroid">
-                    <!-- GANTI NAMA FILE "foto.jpg" DENGAN FOTO KAMU & WANDA (OPSIONAL) -->
                     <img src="https://via.placeholder.com/300x200/ffb6c1/ffffff?text=Thank+You+Wanda" alt="Foto">
                     <div class="polaroid-caption">You're the best! 📸</div>
                 </div>
@@ -146,7 +150,7 @@
         <div class="paper" id="p3">
             <div class="front">
                 <h3>Satu Lagi... 💌</h3>
-                <p>Jujur dari kemarin aku pengen banget ngajakin kamu.</p>
+                <p>Jujur dari kemarin aku pengen banget ngajakin kamu keluar.</p>
                 <p>Boleh nggak aku traktir kamu sebagai tanda terima kasih? Boleh ga sih? hehe 👉👈</p>
                 <button class="nav-btn next-btn" onclick="bukaP3()">Selesai ➔</button>
             </div>
@@ -165,34 +169,16 @@
         const bgm = document.getElementById("bgm");
 
         function bukaP1() {
-            if (bgm.paused) {
-                bgm.play().catch(() => console.log("Perlu interaksi untuk memutar audio."));
-            }
-            p1.classList.add("flipped");
-            setTimeout(() => { p1.style.zIndex = 1; }, 500);
+            if (bgm.paused) { bgm.play().catch(() => console.log("Perlu interaksi untuk memutar audio.")); }
+            p1.classList.add("flipped"); setTimeout(() => { p1.style.zIndex = 1; }, 500);
         }
-        function tutupP1() {
-            p1.style.zIndex = 3;
-            p1.classList.remove("flipped");
-        }
+        function tutupP1() { p1.style.zIndex = 3; p1.classList.remove("flipped"); }
 
-        function bukaP2() {
-            p2.classList.add("flipped");
-            setTimeout(() => { p2.style.zIndex = 2; }, 500);
-        }
-        function tutupP2() {
-            p2.style.zIndex = 2;
-            p2.classList.remove("flipped");
-        }
+        function bukaP2() { p2.classList.add("flipped"); setTimeout(() => { p2.style.zIndex = 2; }, 500); }
+        function tutupP2() { p2.style.zIndex = 2; p2.classList.remove("flipped"); }
 
-        function bukaP3() {
-            p3.classList.add("flipped");
-            setTimeout(() => { p3.style.zIndex = 3; }, 500);
-        }
-        function tutupP3() {
-            p3.style.zIndex = 1;
-            p3.classList.remove("flipped");
-        }
+        function bukaP3() { p3.classList.add("flipped"); setTimeout(() => { p3.style.zIndex = 3; }, 500); }
+        function tutupP3() { p3.style.zIndex = 1; p3.classList.remove("flipped"); }
     </script>
 </body>
 </html>
