@@ -123,7 +123,10 @@
       pointer-events: auto;
     }
 
-    /* Tombol close */
+
+    /* =========================================================
+       TOMBOL CLOSE
+    ========================================================= */
 
     .wanda-close-btn {
       position: fixed;
@@ -154,7 +157,9 @@
     }
 
 
-    /* Background stars */
+    /* =========================================================
+       BACKGROUND STARS
+    ========================================================= */
 
     .wanda-floating-star {
       position: absolute;
@@ -192,7 +197,10 @@
     }
 
 
-    /* Book */
+    /* =========================================================
+       BOOK
+       DESKTOP
+    ========================================================= */
 
     .wanda-book {
       position: relative;
@@ -204,18 +212,132 @@
 
       z-index: 10;
 
+      /*
+        Tetap digeser setengah lebar agar
+        ketika halaman dibuka, posisi spread
+        berada di tengah layar.
+      */
       transform: translateX(175px);
 
-      transition: transform 0.4s ease;
+      transition:
+        transform 0.4s ease,
+        width 0.4s ease,
+        height 0.4s ease;
     }
 
 
-    @media (max-width: 768px) {
+    /* =========================================================
+       BOOK - TABLET
+    ========================================================= */
+
+    @media (min-width: 769px) and (max-width: 1100px) {
+
       .wanda-book {
+        width: 390px;
+        height: 500px;
+
         transform:
-          translateX(78px)
-          scale(0.45);
+          translateX(195px);
       }
+
+    }
+
+
+    /* =========================================================
+       BOOK - MOBILE
+    ========================================================= */
+
+    @media (max-width: 768px) {
+
+      .wanda-book {
+
+        /*
+          Sebelumnya:
+          width 350px
+          height 450px
+          scale 0.45
+
+          Sekarang dibuat jauh lebih besar.
+        */
+
+        width: min(86vw, 390px);
+
+        height: min(118vw, 505px);
+
+        /*
+          50% = posisi spine tetap berada
+          dekat tengah layar ketika halaman
+          dibuka.
+        */
+
+        transform:
+          translateX(50%);
+
+        perspective: 1300px;
+      }
+
+    }
+
+
+    /* =========================================================
+       BOOK - SMALL MOBILE
+    ========================================================= */
+
+    @media (max-width: 420px) {
+
+      .wanda-book {
+
+        width: 86vw;
+
+        height: 116vw;
+
+        max-height: 490px;
+
+        transform:
+          translateX(50%);
+      }
+
+    }
+
+
+    /* =========================================================
+       VERY SMALL MOBILE
+    ========================================================= */
+
+    @media (max-width: 360px) {
+
+      .wanda-book {
+
+        width: 88vw;
+
+        height: 118vw;
+
+        max-height: 450px;
+
+        transform:
+          translateX(50%);
+      }
+
+      .wanda-front,
+      .wanda-back {
+
+        padding: 22px;
+      }
+
+      .wanda-front p,
+      .wanda-back p {
+
+        font-size: 18px;
+
+      }
+
+      .wanda-front h3,
+      .wanda-back h3 {
+
+        font-size: 23px;
+
+      }
+
     }
 
 
@@ -271,6 +393,8 @@
       font-family:
         'Patrick Hand',
         cursive;
+
+      overflow: hidden;
     }
 
 
@@ -282,7 +406,9 @@
     }
 
 
-    /* Spiral */
+    /* =========================================================
+       SPIRAL
+    ========================================================= */
 
     .wanda-front::before,
     .wanda-back::before {
@@ -316,7 +442,9 @@
     }
 
 
-    /* Layer */
+    /* =========================================================
+       LAYER
+    ========================================================= */
 
     #wanda-p1 {
       z-index: 3;
@@ -336,7 +464,9 @@
     }
 
 
-    /* Cover */
+    /* =========================================================
+       COVER
+    ========================================================= */
 
     .wanda-cover {
       background:
@@ -388,7 +518,9 @@
     }
 
 
-    /* Navigation buttons */
+    /* =========================================================
+       NAVIGATION BUTTONS
+    ========================================================= */
 
     .wanda-nav-btn {
       position: absolute;
@@ -459,7 +591,9 @@
     }
 
 
-    /* Polaroid */
+    /* =========================================================
+       POLAROID
+    ========================================================= */
 
     .wanda-polaroid {
       background: white;
@@ -519,7 +653,9 @@
     }
 
 
-    /* Music indicator */
+    /* =========================================================
+       MUSIC INDICATOR
+    ========================================================= */
 
     .wanda-music-indicator {
       position: fixed;
@@ -565,6 +701,85 @@
     .wanda-music-indicator.show {
       opacity: 1;
     }
+
+
+    /* =========================================================
+       MOBILE BOOK CONTENT
+    ========================================================= */
+
+    @media (max-width: 768px) {
+
+      .wanda-front,
+      .wanda-back {
+        padding: 24px;
+      }
+
+      .wanda-front h3,
+      .wanda-back h3 {
+        font-size: 25px;
+      }
+
+      .wanda-front p,
+      .wanda-back p {
+        font-size: 19px;
+        line-height: 1.35;
+      }
+
+      .wanda-polaroid {
+        width: 82%;
+        margin-top: 12px;
+      }
+
+      .wanda-polaroid img {
+        height: 145px;
+      }
+
+      .wanda-nav-btn {
+        bottom: 18px;
+        padding: 8px 14px;
+        font-size: 18px;
+      }
+
+      .wanda-cover h2 {
+        font-size: 29px !important;
+      }
+
+    }
+
+
+    @media (max-height: 700px) and (max-width: 768px) {
+
+      .wanda-book {
+        height: min(112vw, 410px);
+      }
+
+      .wanda-front,
+      .wanda-back {
+        padding: 20px;
+      }
+
+      .wanda-front p,
+      .wanda-back p {
+        font-size: 17px;
+        line-height: 1.3;
+      }
+
+      .wanda-front h3,
+      .wanda-back h3 {
+        font-size: 23px;
+      }
+
+      .wanda-polaroid {
+        margin: 8px auto;
+        padding-bottom: 18px;
+      }
+
+      .wanda-polaroid img {
+        height: 120px;
+      }
+
+    }
+
   </style>
 </head>
 
@@ -1034,6 +1249,25 @@
     class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 glass-panel px-4 md:px-6 py-2.5 rounded-full flex items-center gap-2 sm:gap-4 shadow-2xl border border-white/10 max-w-[95vw] overflow-x-auto"
   >
 
+
+    <!-- =====================================================
+         CATATAN WANDA
+         DIPINDAHKAN PALING DEPAN
+    ====================================================== -->
+
+    <button
+      onclick="openWandaLetter()"
+      class="glass-btn px-3.5 py-1.5 rounded-full text-xs font-medium text-pink-200 whitespace-nowrap border-pink-400/30 hover:text-white"
+    >
+      💌 Catatan Buat Wanda
+    </button>
+
+
+    <div class="h-4 w-px bg-slate-700/80"></div>
+
+
+    <!-- TAMBAH BIOTA -->
+
     <button
       onclick="addRandomCreature()"
       class="glass-btn px-3 py-1.5 rounded-full text-xs font-medium text-slate-200 flex items-center gap-1.5 whitespace-nowrap"
@@ -1061,6 +1295,8 @@
     <div class="h-4 w-px bg-slate-700/80"></div>
 
 
+    <!-- SUNRAY -->
+
     <button
       onclick="toggleRays()"
       id="raysToggleBtn"
@@ -1070,6 +1306,8 @@
     </button>
 
 
+    <!-- RESET -->
+
     <button
       onclick="resetCamera()"
       class="glass-btn px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 whitespace-nowrap"
@@ -1078,14 +1316,7 @@
     </button>
 
 
-    <!-- NEW -->
-    <button
-      onclick="openWandaLetter()"
-      class="glass-btn px-3 py-1.5 rounded-full text-xs font-medium text-pink-200 whitespace-nowrap border-pink-400/30 hover:text-white"
-    >
-      💌 Catatan Buat Wanda
-    </button>
-
+    <!-- FULLSCREEN -->
 
     <button
       onclick="toggleFullscreen()"
@@ -1179,7 +1410,9 @@
     <div class="wanda-book">
 
 
-      <!-- PAGE 1 -->
+      <!-- ===================================================
+           PAGE 1
+      ==================================================== -->
 
       <div
         class="wanda-paper"
@@ -1264,7 +1497,9 @@
       </div>
 
 
-      <!-- PAGE 2 -->
+      <!-- ===================================================
+           PAGE 2
+      ==================================================== -->
 
       <div
         class="wanda-paper"
@@ -1312,7 +1547,7 @@
           <div class="wanda-polaroid">
 
             <img
-              src="foto-wanda.jpeg"
+              src="foto-wanda.jpg"
               alt="Foto bersama Wanda"
             >
 
@@ -1338,7 +1573,9 @@
       </div>
 
 
-      <!-- PAGE 3 -->
+      <!-- ===================================================
+           PAGE 3
+      ==================================================== -->
 
       <div
         class="wanda-paper"
@@ -4866,7 +5103,9 @@
       );
 
 
-    /* Open Letter */
+    /* =========================================================
+       OPEN LETTER
+    ========================================================== */
 
     function openWandaLetter() {
 
@@ -4878,12 +5117,6 @@
           'active'
         );
 
-
-      /*
-        Audio hanya dimulai setelah
-        user melakukan klik tombol.
-        Ini aman dari autoplay restriction.
-      */
 
       if (
         wandaBgm.paused
@@ -4922,7 +5155,9 @@
     }
 
 
-    /* Close Letter */
+    /* =========================================================
+       CLOSE LETTER
+    ========================================================== */
 
     function closeWandaLetter() {
 
@@ -4931,11 +5166,6 @@
           'active'
         );
 
-
-      /*
-        Musik tetap dihentikan
-        ketika overlay ditutup.
-      */
 
       wandaBgm.pause();
 
@@ -5057,7 +5287,9 @@
     }
 
 
-    /* Reset book */
+    /* =========================================================
+       RESET BOOK
+    ========================================================== */
 
     function resetWandaBook() {
 
