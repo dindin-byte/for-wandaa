@@ -1,184 +1,5127 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catatan Spesial Buat Wanda</title>
-    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
-    
-    <style>
-        * { box-sizing: border-box; }
-        
-        body {
-            margin: 0; display: flex; justify-content: center; align-items: center;
-            height: 100vh; background-color: #fce4ec;
-            font-family: 'Patrick Hand', cursive; 
-            overflow: hidden; /* Mencegah layar bisa di-scroll / tergeser */
-            /* padding-left: 300px; SUDAH DIHAPUS AGAR RAPI DI HP */
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        /* --- Animasi Background (Bintang Melayang) --- */
-        .floating-star {
-            position: absolute; bottom: -10%; color: #ffeb3b; 
-            font-size: 24px; animation: floatUp linear infinite;
-            opacity: 0.5; z-index: 0; pointer-events: none;
-        }
-        @keyframes floatUp {
-            0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
-            100% { transform: translateY(-120vh) rotate(360deg) scale(1.5); opacity: 0; }
-        }
+  <title>Aquarium Wandaa — Nambah Pengetahuan</title>
 
-        /* --- Desain Buku & Kertas --- */
-        .book { 
-            position: relative; width: 350px; height: 450px; perspective: 1500px; z-index: 10; 
-            /* Menggeser buku sedikit ke kanan agar pas dibuka posisinya persis di tengah */
-            transform: translateX(175px); 
-        }
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-        /* --- PENGATURAN KHUSUS LAYAR HP (RESPONSIVE) --- */
-        @media (max-width: 768px) {
-            .book {
-                /* Skala diperkecil jadi 45% agar 2 halaman muat di layar HP kecil */
-                transform: translateX(78px) scale(0.45); 
-            }
-        }
+  <!-- Aquarium Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-        .paper {
-            position: absolute; width: 100%; height: 100%; top: 0; left: 0;
-            transform-style: preserve-3d; transform-origin: left center;
-            transition: transform 1s ease-in-out;
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.1); border-radius: 5px 15px 15px 5px;
-        }
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+    rel="stylesheet"
+  >
 
-        .front, .back {
-            position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
-            padding: 30px; background-color: #fff;
-            border-radius: 5px 15px 15px 5px;
-            background-image: radial-gradient(#f8bbd0 1px, transparent 1px); background-size: 20px 20px;
-        }
-        .back { transform: rotateY(180deg); border-radius: 15px 5px 5px 15px; }
+  <!-- Letter Font -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap"
+    rel="stylesheet"
+  >
 
-        /* --- Efek Spiral Jilid --- */
-        .front::before, .back::before {
-            content: ''; position: absolute; top: 0; bottom: 0; width: 25px;
-            background: repeating-linear-gradient(0deg, transparent, transparent 15px, #ccc 15px, #ccc 20px);
-            z-index: 10;
-        }
-        .front::before { left: 5px; } .back::before { right: 5px; }
+  <style>
+    /* =========================================================
+       AQUARIUM
+    ========================================================= */
 
-        #p1 { z-index: 3; } #p2 { z-index: 2; } #p3 { z-index: 1; }
-        .flipped { transform: rotateY(-180deg); }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow: hidden;
+      background-color: #030d17;
+      user-select: none;
+      margin: 0;
+    }
 
-        /* --- Tipografi & Tombol --- */
-        .cover { background: #f48fb1; color: white; text-align: center; border: 2px solid #e91e63; }
-        h3 { color: #d81b60; border-bottom: 2px dashed #f48fb1; padding-bottom: 5px; font-size: 26px; margin-top: 0;}
-        p { font-size: 20px; line-height: 1.4; color: #444; }
-        
-        .nav-btn {
-            position: absolute; bottom: 20px; padding: 8px 15px; background: #f48fb1;
-            color: white; border: none; border-radius: 15px; cursor: pointer; 
-            font-family: 'Patrick Hand', cursive; font-size: 18px;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.1); transition: 0.3s;
-        }
-        .nav-btn:hover { background: #e91e63; }
-        .next-btn { right: 20px; } .prev-btn { left: 20px; }
-        .cover-btn { position: relative; bottom: 0; margin-top: 20px; background: white; color: #f48fb1; font-size: 20px;}
-        .cover-btn:hover { background: #fce4ec; color: #d81b60;}
+    .font-serif {
+      font-family: 'Playfair Display', serif;
+    }
 
-        /* --- Desain Foto Polaroid --- */
-        .polaroid {
-            background: white; padding: 10px 10px 25px 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            transform: rotate(-3deg); width: 85%; margin: 15px auto; display: block;
-            transition: transform 0.3s; border: 1px solid #eee;
-        }
-        .polaroid:hover { transform: rotate(2deg) scale(1.05); z-index: 10; position: relative;}
-        .polaroid img { width: 100%; height: 160px; object-fit: cover; }
-        .polaroid-caption { text-align: center; font-size: 18px; color: #555; margin-top: 5px; }
-    </style>
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.4);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(56, 189, 248, 0.25);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(56, 189, 248, 0.5);
+    }
+
+    .glass-panel {
+      background: rgba(6, 20, 32, 0.65);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .glass-btn {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glass-btn:hover {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: rgba(56, 189, 248, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .glass-btn.active {
+      background: rgba(56, 189, 248, 0.25);
+      border-color: rgba(56, 189, 248, 0.6);
+      color: #7dd3fc;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
+    }
+
+
+    /* =========================================================
+       LETTER / CATATAN WANDA
+    ========================================================= */
+
+    #wandaLetterOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(255, 255, 255, 0.08),
+          rgba(3, 13, 23, 0.92)
+        );
+
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+
+      transition:
+        opacity 0.4s ease,
+        visibility 0.4s ease;
+    }
+
+    #wandaLetterOverlay.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    /* Tombol close */
+
+    .wanda-close-btn {
+      position: fixed;
+      top: 25px;
+      right: 25px;
+      z-index: 120;
+
+      width: 44px;
+      height: 44px;
+
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.25);
+
+      background: rgba(255,255,255,0.12);
+      color: white;
+
+      font-size: 22px;
+      cursor: pointer;
+
+      backdrop-filter: blur(10px);
+
+      transition: 0.3s;
+    }
+
+    .wanda-close-btn:hover {
+      background: rgba(244, 143, 177, 0.8);
+      transform: rotate(90deg);
+    }
+
+
+    /* Background stars */
+
+    .wanda-floating-star {
+      position: absolute;
+      bottom: -10%;
+
+      color: #ffeb3b;
+      font-size: 24px;
+
+      animation: wandaFloatUp linear infinite;
+
+      opacity: 0.5;
+
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    @keyframes wandaFloatUp {
+      0% {
+        transform:
+          translateY(0)
+          rotate(0deg)
+          scale(1);
+
+        opacity: 1;
+      }
+
+      100% {
+        transform:
+          translateY(-120vh)
+          rotate(360deg)
+          scale(1.5);
+
+        opacity: 0;
+      }
+    }
+
+
+    /* Book */
+
+    .wanda-book {
+      position: relative;
+
+      width: 350px;
+      height: 450px;
+
+      perspective: 1500px;
+
+      z-index: 10;
+
+      transform: translateX(175px);
+
+      transition: transform 0.4s ease;
+    }
+
+
+    @media (max-width: 768px) {
+      .wanda-book {
+        transform:
+          translateX(78px)
+          scale(0.45);
+      }
+    }
+
+
+    .wanda-paper {
+      position: absolute;
+
+      width: 100%;
+      height: 100%;
+
+      top: 0;
+      left: 0;
+
+      transform-style: preserve-3d;
+      transform-origin: left center;
+
+      transition:
+        transform 1s ease-in-out;
+
+      box-shadow:
+        5px 5px 15px rgba(0,0,0,0.1);
+
+      border-radius:
+        5px 15px 15px 5px;
+    }
+
+
+    .wanda-front,
+    .wanda-back {
+      position: absolute;
+
+      width: 100%;
+      height: 100%;
+
+      backface-visibility: hidden;
+
+      padding: 30px;
+
+      background-color: #fff;
+
+      border-radius:
+        5px 15px 15px 5px;
+
+      background-image:
+        radial-gradient(
+          #f8bbd0 1px,
+          transparent 1px
+        );
+
+      background-size: 20px 20px;
+
+      box-sizing: border-box;
+
+      font-family:
+        'Patrick Hand',
+        cursive;
+    }
+
+
+    .wanda-back {
+      transform: rotateY(180deg);
+
+      border-radius:
+        15px 5px 5px 15px;
+    }
+
+
+    /* Spiral */
+
+    .wanda-front::before,
+    .wanda-back::before {
+      content: '';
+
+      position: absolute;
+
+      top: 0;
+      bottom: 0;
+
+      width: 25px;
+
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 15px,
+          #ccc 15px,
+          #ccc 20px
+        );
+
+      z-index: 10;
+    }
+
+    .wanda-front::before {
+      left: 5px;
+    }
+
+    .wanda-back::before {
+      right: 5px;
+    }
+
+
+    /* Layer */
+
+    #wanda-p1 {
+      z-index: 3;
+    }
+
+    #wanda-p2 {
+      z-index: 2;
+    }
+
+    #wanda-p3 {
+      z-index: 1;
+    }
+
+
+    .wanda-flipped {
+      transform: rotateY(-180deg);
+    }
+
+
+    /* Cover */
+
+    .wanda-cover {
+      background:
+        linear-gradient(
+          135deg,
+          #f48fb1,
+          #ec709c
+        );
+
+      color: white;
+
+      text-align: center;
+
+      border: 2px solid #e91e63;
+    }
+
+
+    .wanda-front h3,
+    .wanda-back h3 {
+      color: #d81b60;
+
+      border-bottom:
+        2px dashed #f48fb1;
+
+      padding-bottom: 5px;
+
+      font-size: 26px;
+
+      margin-top: 0;
+    }
+
+
+    .wanda-front p,
+    .wanda-back p {
+      font-family:
+        'Patrick Hand',
+        cursive;
+
+      font-size: 20px;
+
+      line-height: 1.4;
+
+      color: #444;
+    }
+
+
+    .wanda-cover p {
+      color: white !important;
+    }
+
+
+    /* Navigation buttons */
+
+    .wanda-nav-btn {
+      position: absolute;
+
+      bottom: 20px;
+
+      padding: 8px 15px;
+
+      background: #f48fb1;
+
+      color: white;
+
+      border: none;
+
+      border-radius: 15px;
+
+      cursor: pointer;
+
+      font-family:
+        'Patrick Hand',
+        cursive;
+
+      font-size: 18px;
+
+      box-shadow:
+        2px 2px 5px rgba(0,0,0,0.1);
+
+      transition: 0.3s;
+    }
+
+
+    .wanda-nav-btn:hover {
+      background: #e91e63;
+
+      transform:
+        translateY(-2px);
+    }
+
+
+    .wanda-next-btn {
+      right: 20px;
+    }
+
+    .wanda-prev-btn {
+      left: 20px;
+    }
+
+
+    .wanda-cover-btn {
+      position: relative;
+
+      bottom: 0;
+
+      margin-top: 20px;
+
+      background: white;
+
+      color: #f48fb1;
+
+      font-size: 20px;
+    }
+
+
+    .wanda-cover-btn:hover {
+      background: #fce4ec;
+
+      color: #d81b60;
+    }
+
+
+    /* Polaroid */
+
+    .wanda-polaroid {
+      background: white;
+
+      padding:
+        10px 10px 25px 10px;
+
+      box-shadow:
+        0 4px 8px rgba(0,0,0,0.2);
+
+      transform: rotate(-3deg);
+
+      width: 85%;
+
+      margin: 15px auto;
+
+      display: block;
+
+      transition:
+        transform 0.3s;
+
+      border: 1px solid #eee;
+    }
+
+
+    .wanda-polaroid:hover {
+      transform:
+        rotate(2deg)
+        scale(1.05);
+
+      z-index: 10;
+
+      position: relative;
+    }
+
+
+    .wanda-polaroid img {
+      width: 100%;
+      height: 160px;
+
+      object-fit: cover;
+    }
+
+
+    .wanda-polaroid-caption {
+      text-align: center;
+
+      font-family:
+        'Patrick Hand',
+        cursive;
+
+      font-size: 18px;
+
+      color: #555;
+
+      margin-top: 5px;
+    }
+
+
+    /* Music indicator */
+
+    .wanda-music-indicator {
+      position: fixed;
+
+      left: 50%;
+      bottom: 25px;
+
+      transform:
+        translateX(-50%);
+
+      z-index: 120;
+
+      padding:
+        8px 15px;
+
+      border-radius: 999px;
+
+      background:
+        rgba(255,255,255,0.12);
+
+      border:
+        1px solid
+        rgba(255,255,255,0.2);
+
+      color: white;
+
+      font-family:
+        'Patrick Hand',
+        cursive;
+
+      font-size: 16px;
+
+      opacity: 0;
+
+      transition: 0.3s;
+
+      pointer-events: none;
+
+      backdrop-filter: blur(10px);
+    }
+
+
+    .wanda-music-indicator.show {
+      opacity: 1;
+    }
+  </style>
 </head>
-<body>
 
-    <!-- Audio Latar -->
-    <audio id="bgm" src="lagu.mp3" loop></audio>
 
-    <!-- Elemen Animasi Background (Bintang) -->
-    <div class="floating-star" style="left: 10%; animation-duration: 8s;">⭐</div>
-    <div class="floating-star" style="left: 30%; animation-duration: 12s; font-size: 16px;">✨</div>
-    <div class="floating-star" style="left: 60%; animation-duration: 10s;">⭐</div>
-    <div class="floating-star" style="left: 80%; animation-duration: 14s; font-size: 20px;">✨</div>
-    <div class="floating-star" style="left: 45%; animation-duration: 9s;">⭐</div>
+<body
+  class="w-screen h-screen relative text-slate-100 overflow-hidden select-none bg-[#030d17]"
+>
 
-    <div class="book">
-        
-        <!-- LEMBAR 1 -->
-        <div class="paper" id="p1">
-            <div class="front cover">
-                <div style="font-size: 50px; margin-top: 30px;">🐱</div>
-                <h2 style="font-size: 32px;">Khusus Buat Wanda</h2>
-                <p style="color: #fff; font-size: 16px;">(Buka pelan-pelan ya!)</p>
-                <button class="nav-btn cover-btn" onclick="bukaP1()">Klik Buka ➔</button>
-            </div>
-            <div class="back">
-                <h3>Halo Wanda! 🐾</h3>
-                <p>Lewat catatan kecil ini, aku cuma mau bilang makasih banyak ya karena kamu udah bantuin aku.</p>
-                <p>Bantuanmu bener-bener berarti banget buat aku.</p>
-                <button class="nav-btn prev-btn" onclick="tutupP1()">🡠 Tutup</button>
-            </div>
+
+  <!-- =========================================================
+       AQUARIUM CANVAS
+  ========================================================== -->
+
+  <canvas
+    id="oceanCanvas"
+    class="absolute inset-0 w-full h-full z-0 cursor-crosshair"
+  ></canvas>
+
+
+  <!-- Vignette -->
+
+  <div
+    class="absolute inset-0 pointer-events-none z-10 bg-[radial-gradient(circle_at_center,transparent_30%,rgba(2,10,18,0.75)_100%)]"
+  ></div>
+
+
+  <!-- =========================================================
+       HEADER
+  ========================================================== -->
+
+  <header
+    class="absolute top-0 left-0 right-0 z-20 flex justify-between items-center px-4 md:px-8 py-4"
+  >
+
+    <div class="flex flex-col">
+
+      <div class="flex items-center gap-3">
+
+        <div
+          class="w-8 h-8 rounded-full bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center shadow-lg shadow-cyan-950/40"
+        >
+          <div
+            class="w-2.5 h-2.5 rounded-full bg-cyan-300 animate-ping"
+          ></div>
         </div>
 
-        <!-- LEMBAR 2 -->
-        <div class="paper" id="p2">
-            <div class="front">
-                <h3>Gantian Dong 🌷</h3>
-                <p>Karena kamu udah baik banget, boleh nggak sekarang gantian aku yang bantuin kamu?</p>
-                <p>Bantuin skripsi kamu kek, atau bantuin apa aja deh yang lagi kamu kerjain.</p>
-                <button class="nav-btn next-btn" onclick="bukaP2()">Lanjut ➔</button>
-            </div>
-            <div class="back">
-                <h3>Terima Kasih ✨</h3>
-                
-                <div class="polaroid">
-                    <img src="https://via.placeholder.com/300x200/ffb6c1/ffffff?text=Thank+You+Wanda" alt="Foto">
-                    <div class="polaroid-caption">You're the best! 📸</div>
-                </div>
-                
-                <button class="nav-btn prev-btn" onclick="tutupP2()">🡠 Kembali</button>
-            </div>
+
+        <div>
+
+          <h1
+            class="text-2xl md:text-3xl font-serif tracking-widest text-slate-100 font-light lowercase"
+          >
+            Aquarium Wandaa
+          </h1>
+
+          <p
+            class="text-[11px] text-cyan-200/60 font-light tracking-wider"
+          >
+            Nikmati waktu Anda di samudra raya.
+          </p>
+
         </div>
 
-        <!-- LEMBAR 3 -->
-        <div class="paper" id="p3">
-            <div class="front">
-                <h3>Satu Lagi... 💌</h3>
-                <p>Jujur dari kemarin aku pengen banget ngajakin kamu keluar.</p>
-                <p>Boleh nggak aku traktir kamu sebagai tanda terima kasih? Boleh ga sih? hehe 👉👈</p>
-                <button class="nav-btn next-btn" onclick="bukaP3()">Selesai ➔</button>
-            </div>
-            <div class="back cover">
-                <h2 style="margin-top: 150px; font-size: 32px;">Ditunggu Jawabannya ⭐</h2>
-                <p style="color: white;">(Semoga jawabannya boleh ya!)</p>
-                <button class="nav-btn cover-btn" onclick="tutupP3()">Baca Lagi</button>
-            </div>
-        </div>
+      </div>
+
     </div>
 
-    <script>
-        const p1 = document.getElementById("p1");
-        const p2 = document.getElementById("p2");
-        const p3 = document.getElementById("p3");
-        const bgm = document.getElementById("bgm");
 
-        function bukaP1() {
-            if (bgm.paused) { bgm.play().catch(() => console.log("Perlu interaksi untuk memutar audio.")); }
-            p1.classList.add("flipped"); setTimeout(() => { p1.style.zIndex = 1; }, 500);
+    <!-- Desktop Filter -->
+
+    <div
+      class="hidden lg:flex items-center gap-1 glass-panel p-1.5 rounded-full shadow-2xl"
+    >
+
+      <button
+        onclick="setFilter('semua')"
+        id="filter-semua"
+        class="glass-btn active px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide"
+      >
+        Semua Biota
+      </button>
+
+      <button
+        onclick="setFilter('hiu_pari')"
+        id="filter-hiu_pari"
+        class="glass-btn px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide text-slate-300"
+      >
+        Hiu & Pari
+      </button>
+
+      <button
+        onclick="setFilter('terumbu')"
+        id="filter-terumbu"
+        class="glass-btn px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide text-slate-300"
+      >
+        Ikan Terumbu
+      </button>
+
+      <button
+        onclick="setFilter('reptil')"
+        id="filter-reptil"
+        class="glass-btn px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide text-slate-300"
+      >
+        Penyu & Reptil
+      </button>
+
+      <button
+        onclick="setFilter('ubur')"
+        id="filter-ubur"
+        class="glass-btn px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide text-slate-300"
+      >
+        Ubur-ubur
+      </button>
+
+      <button
+        onclick="setFilter('eksotis')"
+        id="filter-eksotis"
+        class="glass-btn px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide text-slate-300"
+      >
+        Eksotis & Laut Dalam
+      </button>
+
+    </div>
+
+
+    <!-- Search / Audio / Depth -->
+
+    <div class="flex items-center gap-2 md:gap-3">
+
+      <div class="relative hidden sm:block">
+
+        <input
+          type="text"
+          id="searchInput"
+          oninput="handleSearch(this.value)"
+          placeholder="Cari spesies..."
+          class="glass-panel text-xs text-cyan-100 placeholder-slate-400 pl-8 pr-3 py-1.5 rounded-full outline-none border border-cyan-500/20 focus:border-cyan-400/60 w-36 md:w-48 transition-all"
+        >
+
+        <svg
+          class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          />
+        </svg>
+
+      </div>
+
+
+      <!-- Aquarium Sound -->
+
+      <button
+        id="soundToggleBtn"
+        onclick="toggleAudio()"
+        class="glass-btn flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-medium tracking-wider text-slate-200 hover:text-white"
+      >
+
+        <svg
+          id="soundIconOff"
+          class="w-4 h-4 text-slate-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
+          />
+
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"
+          />
+        </svg>
+
+
+        <svg
+          id="soundIconOn"
+          class="w-4 h-4 text-cyan-400 hidden animate-pulse"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
+          />
+        </svg>
+
+        <span id="soundLabel" class="hidden sm:inline">
+          Suara: Mati
+        </span>
+
+      </button>
+
+
+      <!-- Depth -->
+
+      <div
+        class="hidden md:flex flex-col items-end text-xs glass-panel px-3.5 py-1.5 rounded-2xl border border-cyan-500/20"
+      >
+
+        <span
+          class="text-cyan-300 font-mono font-bold tracking-wider"
+          id="depthGauge"
+        >
+          18.5 m
+        </span>
+
+        <span
+          class="text-[9px] text-slate-400 uppercase tracking-widest"
+        >
+          Kedalaman
+        </span>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- =========================================================
+       MOBILE FILTER
+  ========================================================== -->
+
+  <div
+    class="lg:hidden absolute top-20 left-0 right-0 z-20 flex justify-center px-4"
+  >
+
+    <div
+      class="flex items-center gap-1 glass-panel p-1.5 rounded-full overflow-x-auto max-w-full"
+    >
+
+      <button
+        onclick="setFilter('semua')"
+        id="m-filter-semua"
+        class="glass-btn active px-3 py-1 rounded-full text-[11px] whitespace-nowrap"
+      >
+        Semua
+      </button>
+
+      <button
+        onclick="setFilter('hiu_pari')"
+        id="m-filter-hiu_pari"
+        class="glass-btn px-3 py-1 rounded-full text-[11px] text-slate-300 whitespace-nowrap"
+      >
+        Hiu & Pari
+      </button>
+
+      <button
+        onclick="setFilter('terumbu')"
+        id="m-filter-terumbu"
+        class="glass-btn px-3 py-1 rounded-full text-[11px] text-slate-300 whitespace-nowrap"
+      >
+        Terumbu
+      </button>
+
+      <button
+        onclick="setFilter('reptil')"
+        id="m-filter-reptil"
+        class="glass-btn px-3 py-1 rounded-full text-[11px] text-slate-300 whitespace-nowrap"
+      >
+        Penyu
+      </button>
+
+      <button
+        onclick="setFilter('ubur')"
+        id="m-filter-ubur"
+        class="glass-btn px-3 py-1 rounded-full text-[11px] text-slate-300 whitespace-nowrap"
+      >
+        Ubur-ubur
+      </button>
+
+      <button
+        onclick="setFilter('eksotis')"
+        id="m-filter-eksotis"
+        class="glass-btn px-3 py-1 rounded-full text-[11px] text-slate-300 whitespace-nowrap"
+      >
+        Eksotis
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       INFO CARD
+  ========================================================== -->
+
+  <div
+    id="infoCard"
+    class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 w-11/12 max-w-lg glass-panel p-6 rounded-3xl shadow-2xl transition-all duration-300 transform opacity-0 scale-90 pointer-events-none border border-cyan-400/30"
+  >
+
+    <button
+      onclick="closeInfoCard()"
+      class="absolute top-4 right-4 w-8 h-8 rounded-full glass-btn flex items-center justify-center text-slate-400 hover:text-white transition-colors"
+    >
+      ✕
+    </button>
+
+    <div class="flex flex-wrap items-center gap-2 mb-3">
+
+      <span
+        id="cardBadge"
+        class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-cyan-500/20 text-cyan-300 border border-cyan-500/30"
+      >
+        Kategori
+      </span>
+
+      <span
+        id="cardConservation"
+        class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+      >
+        Konservasi
+      </span>
+
+      <span
+        id="cardDepth"
+        class="text-xs text-slate-400 font-mono ml-auto"
+      >
+        Kedalaman: 10m - 50m
+      </span>
+
+    </div>
+
+
+    <h2
+      id="cardTitle"
+      class="text-2xl font-serif text-white mb-0.5"
+    >
+      Nama Spesies
+    </h2>
+
+
+    <p
+      id="cardLatin"
+      class="text-xs italic text-cyan-200/80 mb-3 font-serif"
+    >
+      Taksonomi Latin
+    </p>
+
+
+    <div class="space-y-3 mb-5 max-h-52 overflow-y-auto pr-1">
+
+      <p
+        id="cardDesc"
+        class="text-xs leading-relaxed text-slate-300"
+      >
+        Deskripsi mendalam mengenai biota laut ini.
+      </p>
+
+
+      <div
+        class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-700/50"
+      >
+
+        <div
+          class="bg-slate-900/50 p-2.5 rounded-xl border border-white/5"
+        >
+          <span
+            class="block text-[10px] text-slate-400 uppercase tracking-wider"
+          >
+            Habitat
+          </span>
+
+          <span
+            id="cardHabitat"
+            class="text-xs font-semibold text-cyan-300"
+          >
+            Laut Dalam
+          </span>
+        </div>
+
+
+        <div
+          class="bg-slate-900/50 p-2.5 rounded-xl border border-white/5"
+        >
+
+          <span
+            class="block text-[10px] text-slate-400 uppercase tracking-wider"
+          >
+            Makanan Utama
+          </span>
+
+          <span
+            id="cardDiet"
+            class="text-xs font-semibold text-cyan-300"
+          >
+            Plankton
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div
+        class="bg-cyan-950/40 p-3 rounded-xl border border-cyan-500/20"
+      >
+
+        <span
+          class="block text-[10px] text-cyan-300 uppercase tracking-wider font-bold mb-1"
+        >
+          💡 Fakta Unik
+        </span>
+
+        <p
+          id="cardFact"
+          class="text-xs text-slate-200 italic leading-relaxed"
+        >
+          Fakta menarik tentang spesies ini.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div
+      class="flex items-center justify-between pt-2 border-t border-slate-700/50 text-[11px] text-slate-400"
+    >
+
+      <span class="flex items-center gap-1.5">
+
+        <span
+          class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"
+        ></span>
+
+        Sedang Diteliti
+
+      </span>
+
+
+      <button
+        onclick="releaseFocus()"
+        class="text-cyan-400 hover:text-cyan-300 underline font-medium"
+      >
+        Lanjutkan Berenang
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       BOTTOM TOOLBAR
+  ========================================================== -->
+
+  <div
+    class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 glass-panel px-4 md:px-6 py-2.5 rounded-full flex items-center gap-2 sm:gap-4 shadow-2xl border border-white/10 max-w-[95vw] overflow-x-auto"
+  >
+
+    <button
+      onclick="addRandomCreature()"
+      class="glass-btn px-3 py-1.5 rounded-full text-xs font-medium text-slate-200 flex items-center gap-1.5 whitespace-nowrap"
+    >
+
+      <svg
+        class="w-3.5 h-3.5 text-cyan-400"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 4v16m8-8H4"
+        />
+      </svg>
+
+      Tambah Biota
+
+    </button>
+
+
+    <div class="h-4 w-px bg-slate-700/80"></div>
+
+
+    <button
+      onclick="toggleRays()"
+      id="raysToggleBtn"
+      class="glass-btn px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 whitespace-nowrap"
+    >
+      Cahaya Sunray: ON
+    </button>
+
+
+    <button
+      onclick="resetCamera()"
+      class="glass-btn px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 whitespace-nowrap"
+    >
+      Reset Tampilan
+    </button>
+
+
+    <!-- NEW -->
+    <button
+      onclick="openWandaLetter()"
+      class="glass-btn px-3 py-1.5 rounded-full text-xs font-medium text-pink-200 whitespace-nowrap border-pink-400/30 hover:text-white"
+    >
+      💌 Catatan Buat Wanda
+    </button>
+
+
+    <button
+      onclick="toggleFullscreen()"
+      class="glass-btn px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 whitespace-nowrap hidden sm:block"
+    >
+      Layar Penuh
+    </button>
+
+  </div>
+
+
+  <!-- =========================================================
+       WANDA LETTER OVERLAY
+  ========================================================== -->
+
+  <div id="wandaLetterOverlay">
+
+
+    <!-- Floating Stars -->
+
+    <div
+      class="wanda-floating-star"
+      style="left:10%; animation-duration:8s;"
+    >
+      ⭐
+    </div>
+
+    <div
+      class="wanda-floating-star"
+      style="left:30%; animation-duration:12s; font-size:16px;"
+    >
+      ✨
+    </div>
+
+    <div
+      class="wanda-floating-star"
+      style="left:60%; animation-duration:10s;"
+    >
+      ⭐
+    </div>
+
+    <div
+      class="wanda-floating-star"
+      style="left:80%; animation-duration:14s; font-size:20px;"
+    >
+      ✨
+    </div>
+
+    <div
+      class="wanda-floating-star"
+      style="left:45%; animation-duration:9s;"
+    >
+      ⭐
+    </div>
+
+
+    <!-- Close -->
+
+    <button
+      class="wanda-close-btn"
+      onclick="closeWandaLetter()"
+      aria-label="Tutup catatan"
+    >
+      ✕
+    </button>
+
+
+    <!-- Music -->
+
+    <div
+      id="wandaMusicIndicator"
+      class="wanda-music-indicator"
+    >
+      🎵 Musik sedang diputar...
+    </div>
+
+
+    <!-- Audio -->
+
+    <audio
+      id="wandaBgm"
+      src="lagu.mp3"
+      loop
+    ></audio>
+
+
+    <!-- =====================================================
+         BOOK
+    ====================================================== -->
+
+    <div class="wanda-book">
+
+
+      <!-- PAGE 1 -->
+
+      <div
+        class="wanda-paper"
+        id="wanda-p1"
+      >
+
+        <!-- FRONT -->
+
+        <div
+          class="wanda-front wanda-cover"
+        >
+
+          <div
+            style="
+              font-size:50px;
+              margin-top:30px;
+            "
+          >
+            🐱
+          </div>
+
+
+          <h2
+            style="
+              font-size:32px;
+              margin:0;
+              font-family:'Patrick Hand',cursive;
+            "
+          >
+            Khusus Buat Wanda
+          </h2>
+
+
+          <p
+            style="
+              color:#fff;
+              font-size:16px;
+            "
+          >
+            (Buka pelan-pelan ya!)
+          </p>
+
+
+          <button
+            class="wanda-nav-btn wanda-cover-btn"
+            onclick="bukaWandaP1()"
+          >
+            Klik Buka ➔
+          </button>
+
+        </div>
+
+
+        <!-- BACK -->
+
+        <div class="wanda-back">
+
+          <h3>
+            Halo Wanda! 🐾
+          </h3>
+
+
+          <p>
+            Lewat catatan kecil ini, aku cuma mau bilang makasih banyak ya karena kamu udah bantuin aku.
+          </p>
+
+
+          <p>
+            Bantuanmu bener-bener berarti banget buat aku.
+          </p>
+
+
+          <button
+            class="wanda-nav-btn wanda-prev-btn"
+            onclick="tutupWandaP1()"
+          >
+            🡠 Tutup
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- PAGE 2 -->
+
+      <div
+        class="wanda-paper"
+        id="wanda-p2"
+      >
+
+        <!-- FRONT -->
+
+        <div class="wanda-front">
+
+          <h3>
+            Gantian Dong 🌷
+          </h3>
+
+
+          <p>
+            Karena kamu udah baik banget, boleh nggak sekarang gantian aku yang bantuin kamu?
+          </p>
+
+
+          <p>
+            Bantuin skripsi kamu kek, atau bantuin apa aja deh yang lagi kamu kerjain.
+          </p>
+
+
+          <button
+            class="wanda-nav-btn wanda-next-btn"
+            onclick="bukaWandaP2()"
+          >
+            Lanjut ➔
+          </button>
+
+        </div>
+
+
+        <!-- BACK -->
+
+        <div class="wanda-back">
+
+          <h3>
+            Terima Kasih ✨
+          </h3>
+
+
+          <div class="wanda-polaroid">
+
+            <img
+              src="foto-wanda.jpeg"
+              alt="Foto bersama Wanda"
+            >
+
+
+            <div
+              class="wanda-polaroid-caption"
+            >
+              You're the best! 📸
+            </div>
+
+          </div>
+
+
+          <button
+            class="wanda-nav-btn wanda-prev-btn"
+            onclick="tutupWandaP2()"
+          >
+            🡠 Kembali
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- PAGE 3 -->
+
+      <div
+        class="wanda-paper"
+        id="wanda-p3"
+      >
+
+        <!-- FRONT -->
+
+        <div class="wanda-front">
+
+          <h3>
+            Satu Lagi... 💌
+          </h3>
+
+
+          <p>
+            Jujur dari kemarin aku pengen banget ngajakin kamu.
+          </p>
+
+
+          <p>
+            Boleh nggak aku traktir kamu sebagai tanda terima kasih? Boleh ga sih? hehe 👉👈
+          </p>
+
+
+          <button
+            class="wanda-nav-btn wanda-next-btn"
+            onclick="bukaWandaP3()"
+          >
+            Selesai ➔
+          </button>
+
+        </div>
+
+
+        <!-- BACK -->
+
+        <div
+          class="wanda-back wanda-cover"
+        >
+
+          <h2
+            style="
+              margin-top:150px;
+              font-size:32px;
+              font-family:'Patrick Hand',cursive;
+            "
+          >
+            Ditunggu Jawabannya ⭐
+          </h2>
+
+
+          <p
+            style="
+              color:white;
+            "
+          >
+            (Semoga jawabannya boleh ya!)
+          </p>
+
+
+          <button
+            class="wanda-nav-btn wanda-cover-btn"
+            onclick="tutupWandaP3()"
+          >
+            Baca Lagi
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       JAVASCRIPT
+  ========================================================== -->
+
+  <script>
+
+    /* =========================================================
+       AQUARIUM VARIABLES
+    ========================================================== */
+
+    const canvas =
+      document.getElementById('oceanCanvas');
+
+    const ctx =
+      canvas.getContext('2d');
+
+
+    let width;
+    let height;
+
+
+    function resizeCanvas() {
+
+      width =
+        canvas.width =
+        window.innerWidth;
+
+      height =
+        canvas.height =
+        window.innerHeight;
+    }
+
+
+    window.addEventListener(
+      'resize',
+      resizeCanvas
+    );
+
+    resizeCanvas();
+
+
+    let activeFilter = 'semua';
+
+    let searchQuery = '';
+
+    let focusedCreature = null;
+
+    let showRays = true;
+
+    let mouse = {
+      x: -1000,
+      y: -1000
+    };
+
+
+    /* =========================================================
+       SPECIES DATABASE
+    ========================================================== */
+
+    const SPECIES_DATA = {
+
+      penyu_hijau: {
+        badge: 'Reptil Laut',
+        title: 'Penyu Hijau',
+        latin: 'Chelonia mydas',
+        depth: '1m - 40m',
+        habitat: 'Padang Lamun & Terumbu',
+        diet: 'Lamun & Ganggang Laut',
+        conservation: 'Terancam Punah',
+        desc: 'Penyu hijau adalah penjelajah samudra purba yang dapat mengarungi ribuan kilometer untuk kembali bertelur di pantai tempat mereka dilahirkan.',
+        fact: 'Warna hijau pada lemak tubuh penyu ini berasal dari diet vegetariannya yang sebagian besar terdiri dari rumput laut.'
+      },
+
+      hiu_martil: {
+        badge: 'Predator Hiu',
+        title: 'Hiu Martil',
+        latin: 'Sphyrna lewini',
+        depth: '10m - 275m',
+        habitat: 'Lepas Pantai & Terumbu Dalam',
+        diet: 'Ikan, Pari, & Cumi-cumi',
+        conservation: 'Kritis',
+        desc: 'Hiu khas dengan kepala berbentuk martil (cephalofoil) yang memberikan penglihatan 360 derajat serta sensor navigasi elektromagnetik yang sangat tajam.',
+        fact: 'Bentuk kepalanya yang lebar memungkinkannya memindai dasar laut dengan sangat efisien untuk mencari pari yang tersembunyi di dalam pasir.'
+      },
+
+      hiu_paus: {
+        badge: 'Ikan Terbesar',
+        title: 'Hiu Paus',
+        latin: 'Rhincodon typus',
+        depth: '0m - 700m',
+        habitat: 'Samudra Tropis Lepas',
+        diet: 'Plankton & Larva Ikan',
+        conservation: 'Rentan Punah',
+        desc: 'Raksasa lembut yang merupakan spesies ikan terbesar yang masih hidup di bumi. Meskipun ukurannya sangat masif, mereka sama sekali tidak berbahaya bagi manusia.',
+        fact: 'Pola bintik-bintik putih di tubuh setiap hiu paus unik seperti sidik jari manusia.'
+      },
+
+      ubur_bulan: {
+        badge: 'Cnidaria',
+        title: 'Ubur-ubur Bulan',
+        latin: 'Aurelia aurita',
+        depth: '0m - 100m',
+        habitat: 'Perairan Pantai & Teluk',
+        diet: 'Zooplankton & Larva',
+        conservation: 'Resiko Rendah',
+        desc: 'Ubur-ubur semi-transparan berbentuk payung dengan empat organ berbentuk tapal kuda di tengah loncengnya yang tampak berkilau anggun.',
+        fact: 'Tubuh ubur-ubur bulan terdiri dari 95% air dan mereka tidak memiliki otak, jantung, maupun darah.'
+      },
+
+      ikan_nemo: {
+        badge: 'Ikan Terumbu',
+        title: 'Ikan Badut (Nemo)',
+        latin: 'Amphiprion ocellaris',
+        depth: '1m - 15m',
+        habitat: 'Anemon Laut',
+        diet: 'Alga & Zooplankton',
+        conservation: 'Aman',
+        desc: 'Ikan hias berwarna oranye terang dengan garis putih ikonik. Mereka hidup bersimbiosis saling menguntungkan dengan anemon laut beracun.',
+        fact: 'Ikan badut memiliki lapisan lendir khusus yang membuat tubuh mereka kebal terhadap sengatan anemon laut.'
+      },
+
+      ikan_dory: {
+        badge: 'Ikan Terumbu',
+        title: 'Ikan Tang Biru (Dory)',
+        latin: 'Paracanthurus hepatus',
+        depth: '2m - 40m',
+        habitat: 'Terumbu Karang Dangkal',
+        diet: 'Alga & Rumpun Mikro',
+        conservation: 'Aman',
+        desc: 'Ikan berwarna biru royal cerah dengan ekor kuning menyala. Berperan penting menjaga kebersihan terumbu karang dari alga berlebih.',
+        fact: 'Ketika terancam bahaya, ikan ini bisa menyembunyikan diri di sela karang dan menegakkan duri tajam di dekat pangkal ekornya.'
+      },
+
+      pari_manta: {
+        badge: 'Elasmobranchii',
+        title: 'Pari Manta',
+        latin: 'Mobula birostris',
+        depth: '0m - 120m',
+        habitat: 'Terumbu & Perairan Terbuka',
+        diet: 'Filter Plankton',
+        conservation: 'Rentan Punah',
+        desc: 'Ikan pari raksasa dengan sirip dada seperti sayap burung yang mengepak lembut, melayang anggun di dalam air bagaikan berenang di udara.',
+        fact: 'Pari Manta memiliki rasio otak terhadap tubuh terbesar dibanding seluruh spesies ikan laut di bumi.'
+      },
+
+      gurita_raksasa: {
+        badge: 'Mollusca',
+        title: 'Gurita Raksasa Pasifik',
+        latin: 'Enteroctopus dofleini',
+        depth: '20m - 150m',
+        habitat: 'Gua Karang & Dasar Laut',
+        diet: 'Kepiting & Kerang',
+        conservation: 'Resiko Rendah',
+        desc: 'Siput laut tanpa cangkang yang sangat cerdas, mampu menyamarkan warna serta tekstur kulitnya secara instan untuk berbaur dengan lingkungan sekitar.',
+        fact: 'Gurita memiliki tiga jantung dan darah berwarna biru karena mengandung senyawa berbasis tembaga (hemosianin).'
+      },
+
+      kuda_laut: {
+        badge: 'Syngnathidae',
+        title: 'Kuda Laut',
+        latin: 'Hippocampus kuda',
+        depth: '1m - 20m',
+        habitat: 'Padang Lamun & Hutan Mangrove',
+        diet: 'Udang Kecil & Plankton',
+        conservation: 'Rentan Punah',
+        desc: 'Ikan unik bersudut kepala mirip kuda dengan ekor yang dapat menggulung untuk mencengkeram tanaman laut agar tidak terbawa arus.',
+        fact: 'Dalam dunia kuda laut, justru individu jantan yang mengandung dan melahirkan anak-anaknya dari kantong khusus.'
+      },
+
+      ikan_buntal: {
+        badge: 'Ikan Terumbu',
+        title: 'Ikan Buntal',
+        latin: 'Tetraodontidae',
+        depth: '2m - 50m',
+        habitat: 'Terumbu & Estuari',
+        diet: 'Mollusca & Kepiting',
+        conservation: 'Aman',
+        desc: 'Ikan yang dapat menggembungkan tubuhnya menjadi bola berduri besar saat merasa terancam untuk menakuti musuhnya.',
+        fact: 'Organ dalam ikan buntal mengandung racun tetrodotoksin yang sangat kuat.'
+      },
+
+      ikan_naso: {
+        badge: 'Ikan Terumbu',
+        title: 'Ikan Botana Naso',
+        latin: 'Naso lituratus',
+        depth: '5m - 90m',
+        habitat: 'Lereng Terumbu Karang',
+        diet: 'Alga Cokelat',
+        conservation: 'Resiko Rendah',
+        desc: 'Ikan elegan dengan tanduk kecil di dahi dan ekor indah melengkung, dihiasi warna bibir oranye mencolok.',
+        fact: 'Memiliki sepasang pisau tajam berwarna oranye menyala di pangkalan ekornya sebagai perlindungan diri.'
+      },
+
+      ikan_singa: {
+        badge: 'Predator Eksotis',
+        title: 'Ikan Singa (Lionfish)',
+        latin: 'Pterois volitans',
+        depth: '1m - 50m',
+        habitat: 'Terumbu Karang Dangkal',
+        diet: 'Ikan Kecil & Udang',
+        conservation: 'Aman',
+        desc: 'Ikan eksotis berhiaskan sirip kipas melayang dengan pola garis-garis merah kecokelatan yang tampak sangat indah sekaligus berbahaya.',
+        fact: 'Duri-duri panjang di punggung ikan ini terhubung langsung dengan kelenjar racun yang sangat menyakitkan jika tersengat.'
+      },
+
+      belut_moray: {
+        badge: 'Eksotis',
+        title: 'Belut Moray',
+        latin: 'Gymnothorax javanicus',
+        depth: '2m - 100m',
+        habitat: 'Celah Celah Karang',
+        diet: 'Ikan & Gurita',
+        conservation: 'Resiko Rendah',
+        desc: 'Predator nokturnal dengan tubuh panjang seperti ular yang sering bersembunyi di balik lubang terumbu karang.',
+        fact: 'Belut moray memiliki rahang kedua di dalam kerongkongannya.'
+      },
+
+      ikan_sungut: {
+        badge: 'Laut Dalam',
+        title: 'Ikan Anglerfish (Sungut)',
+        latin: 'Melanocetus johnsonii',
+        depth: '200m - 2000m',
+        habitat: 'Zona Laut Dalam Abisal',
+        diet: 'Ikan Laut Dalam',
+        conservation: 'Kurang Data',
+        desc: 'Penghuni jurang samudra yang gelap gulita dengan organ antena di kepala yang bisa menyala berkilau (bioluminesensi) untuk memikat mangsa.',
+        fact: 'Lampu alami di kepalanya menyala akibat bantuan bakteri luminesensi yang hidup bersimbiosis dengannya.'
+      },
+
+      ubur_kotak: {
+        badge: 'Cnidaria Beracun',
+        title: 'Ubur-ubur Kotak',
+        latin: 'Chironex fleckeri',
+        depth: '0m - 40m',
+        habitat: 'Perairan Tropis Dangkal',
+        diet: 'Udang & Ikan Kecil',
+        conservation: 'Aman',
+        desc: 'Ubur-ubur berbentuk kubus yang mampu berenang cukup cepat secara aktif bukannya sekadar hanyut terbawa arus.',
+        fact: 'Merupakan salah satu makhluk laut yang memiliki bisa sangat kuat.'
+      }
+
+    };
+
+
+    /* =========================================================
+       BUBBLES
+    ========================================================== */
+
+    class Bubble {
+
+      constructor() {
+        this.reset(true);
+      }
+
+
+      reset(randomY = false) {
+
+        this.x =
+          Math.random() * width;
+
+        this.y =
+          randomY
+            ? Math.random() * height
+            : height + 30;
+
+        this.radius =
+          1 + Math.random() * 3.8;
+
+        this.speedY =
+          0.3 + Math.random() * 0.9;
+
+        this.wobbleSpeed =
+          0.02 + Math.random() * 0.03;
+
+        this.wobbleAmp =
+          0.5 + Math.random() * 1.8;
+
+        this.angle =
+          Math.random() * Math.PI * 2;
+
+        this.alpha =
+          0.12 + Math.random() * 0.45;
+      }
+
+
+      update() {
+
+        this.angle +=
+          this.wobbleSpeed;
+
+        this.x +=
+          Math.sin(this.angle) *
+          this.wobbleAmp *
+          0.3;
+
+        this.y -=
+          this.speedY;
+
+        if (this.y < -20) {
+          this.reset();
         }
-        function tutupP1() { p1.style.zIndex = 3; p1.classList.remove("flipped"); }
+      }
 
-        function bukaP2() { p2.classList.add("flipped"); setTimeout(() => { p2.style.zIndex = 2; }, 500); }
-        function tutupP2() { p2.style.zIndex = 2; p2.classList.remove("flipped"); }
 
-        function bukaP3() { p3.classList.add("flipped"); setTimeout(() => { p3.style.zIndex = 3; }, 500); }
-        function tutupP3() { p3.style.zIndex = 1; p3.classList.remove("flipped"); }
-    </script>
+      draw() {
+
+        ctx.beginPath();
+
+        ctx.arc(
+          this.x,
+          this.y,
+          this.radius,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fillStyle =
+          `rgba(180,240,255,${this.alpha})`;
+
+        ctx.fill();
+
+        ctx.strokeStyle =
+          `rgba(255,255,255,${this.alpha * 1.4})`;
+
+        ctx.lineWidth = 0.5;
+
+        ctx.stroke();
+      }
+
+    }
+
+
+    const bubbles =
+      Array.from(
+        { length: 70 },
+        () => new Bubble()
+      );
+
+
+    /* =========================================================
+       MARINE CREATURE BASE
+    ========================================================== */
+
+    class MarineCreature {
+
+      constructor(
+        type,
+        category,
+        x,
+        y
+      ) {
+
+        this.type = type;
+
+        this.category = category;
+
+        this.x =
+          x ||
+          Math.random() * width;
+
+        this.y =
+          y ||
+          (
+            height * 0.15 +
+            Math.random() *
+            (height * 0.65)
+          );
+
+        this.vx =
+          (Math.random() - 0.5) *
+          1.2;
+
+        this.vy =
+          (Math.random() - 0.5) *
+          0.35;
+
+        this.scale =
+          0.6 +
+          Math.random() * 0.5;
+
+        this.facingLeft =
+          this.vx < 0;
+
+        this.phase =
+          Math.random() *
+          Math.PI * 2;
+
+        this.hitRadius =
+          35 * this.scale;
+
+        this.isFocused = false;
+
+        this.isHovered = false;
+      }
+
+
+      update() {
+
+        if (this.isFocused) {
+          return;
+        }
+
+
+        const speedMult =
+          this.isHovered
+            ? 0.25
+            : 1;
+
+
+        this.phase +=
+          0.03 * speedMult;
+
+
+        this.x +=
+          this.vx * speedMult;
+
+
+        this.y +=
+          this.vy * speedMult +
+          Math.sin(this.phase * 0.8) *
+          0.18;
+
+
+        const margin = 120;
+
+
+        if (this.x < -margin) {
+          this.x =
+            width + margin;
+        }
+
+
+        if (this.x > width + margin) {
+          this.x =
+            -margin;
+        }
+
+
+        if (this.y < height * 0.1) {
+          this.vy += 0.04;
+        }
+
+
+        if (this.y > height * 0.78) {
+          this.vy -= 0.04;
+        }
+
+
+        if (Math.random() < 0.006) {
+          this.vx +=
+            (Math.random() - 0.5) *
+            0.3;
+        }
+
+
+        if (Math.random() < 0.006) {
+          this.vy +=
+            (Math.random() - 0.5) *
+            0.2;
+        }
+
+
+        const maxV = 1.6;
+
+
+        this.vx =
+          Math.max(
+            -maxV,
+            Math.min(
+              maxV,
+              this.vx
+            )
+          );
+
+
+        this.facingLeft =
+          this.vx < 0;
+      }
+
+
+      containsPoint(px, py) {
+
+        const dx =
+          this.x - px;
+
+        const dy =
+          this.y - py;
+
+        return (
+          dx * dx +
+          dy * dy
+        ) <
+        (
+          this.hitRadius *
+          this.hitRadius *
+          1.6
+        );
+      }
+
+
+      drawSelectionRing(
+        ctx,
+        radius = 45
+      ) {
+
+        if (
+          this.isHovered ||
+          this.isFocused
+        ) {
+
+          ctx.strokeStyle =
+            'rgba(56,189,248,0.85)';
+
+          ctx.lineWidth = 2;
+
+          ctx.setLineDash([
+            6,
+            4
+          ]);
+
+          ctx.beginPath();
+
+          ctx.arc(
+            0,
+            0,
+            radius,
+            0,
+            Math.PI * 2
+          );
+
+          ctx.stroke();
+
+          ctx.setLineDash([]);
+        }
+      }
+
+    }
+
+
+    /* =========================================================
+       TURTLE
+    ========================================================== */
+
+    class Turtle
+      extends MarineCreature {
+
+      constructor(x,y) {
+
+        super(
+          'penyu_hijau',
+          'reptil',
+          x,
+          y
+        );
+
+        this.hitRadius =
+          45 * this.scale;
+      }
+
+
+      draw(ctx) {
+
+        ctx.save();
+
+        ctx.translate(
+          this.x,
+          this.y
+        );
+
+        if (!this.facingLeft) {
+          ctx.scale(-1,1);
+        }
+
+        ctx.scale(
+          this.scale,
+          this.scale
+        );
+
+
+        const flipperAngle =
+          Math.sin(
+            this.phase * 1.5
+          ) * 0.35;
+
+
+        ctx.fillStyle =
+          '#3f624c';
+
+        ctx.beginPath();
+
+        ctx.ellipse(
+          0,
+          0,
+          32,
+          22,
+          0,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+
+        ctx.strokeStyle =
+          '#233d2e';
+
+        ctx.lineWidth = 2;
+
+        ctx.stroke();
+
+
+        ctx.fillStyle =
+          '#527e60';
+
+        ctx.beginPath();
+
+        ctx.ellipse(
+          0,
+          -1,
+          22,
+          13,
+          0,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+
+        ctx.fillStyle =
+          '#34523e';
+
+
+        ctx.save();
+
+        ctx.translate(
+          -10,
+          -10
+        );
+
+        ctx.rotate(
+          -0.3 +
+          flipperAngle
+        );
+
+        ctx.beginPath();
+
+        ctx.ellipse(
+          -15,
+          -12,
+          25,
+          8,
+          -0.6,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+        ctx.restore();
+
+
+        ctx.save();
+
+        ctx.translate(
+          -10,
+          10
+        );
+
+        ctx.rotate(
+          0.3 -
+          flipperAngle
+        );
+
+        ctx.beginPath();
+
+        ctx.ellipse(
+          -15,
+          12,
+          25,
+          8,
+          0.6,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+        ctx.restore();
+
+
+        ctx.fillStyle =
+          '#476f54';
+
+        ctx.beginPath();
+
+        ctx.ellipse(
+          -38,
+          0,
+          10,
+          7,
+          0,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+
+        ctx.fillStyle =
+          '#111';
+
+        ctx.beginPath();
+
+        ctx.arc(
+          -41,
+          -2,
+          1.8,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+
+        this.drawSelectionRing(
+          ctx,
+          48
+        );
+
+        ctx.restore();
+      }
+    }
+
+
+    /* =========================================================
+       HAMMERHEAD
+    ========================================================== */
+
+    class HammerheadShark
+      extends MarineCreature {
+
+      constructor(x,y) {
+
+        super(
+          'hiu_martil',
+          'hiu_pari',
+          x,
+          y
+        );
+
+        this.hitRadius =
+          55 * this.scale;
+      }
+
+
+      draw(ctx) {
+
+        ctx.save();
+
+        ctx.translate(
+          this.x,
+          this.y
+        );
+
+        if (!this.facingLeft) {
+          ctx.scale(-1,1);
+        }
+
+        ctx.scale(
+          this.scale,
+          this.scale
+        );
+
+
+        const tailWave =
+          Math.sin(
+            this.phase * 2.2
+          ) * 8;
+
+
+        ctx.fillStyle =
+          '#334155';
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+          35,
+          0
+        );
+
+        ctx.lineTo(
+          60 +
+          tailWave * 0.4,
+          -22
+        );
+
+        ctx.lineTo(
+          50,
+          0
+        );
+
+        ctx.lineTo(
+          60 +
+          tailWave * 0.4,
+          18
+        );
+
+        ctx.closePath();
+
+        ctx.fill();
+
+
+        ctx.fillStyle =
+          '#475569';
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+          -40,
+          0
+        );
+
+        ctx.quadraticCurveTo(
+          -10,
+          -18,
+          35,
+          0
+        );
+
+        ctx.quadraticCurveTo(
+          -10,
+          16,
+          -40,
+          0
+        );
+
+        ctx.fill();
+
+
+        ctx.fillStyle =
+          '#334155';
+
+        ctx.fillRect(
+          -52,
+          -18,
+          12,
+          36
+        );
+
+
+        ctx.fillStyle =
+          '#0f172a';
+
+        ctx.beginPath();
+
+        ctx.arc(
+          -48,
+          -17,
+          2,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+
+        ctx.beginPath();
+
+        ctx.arc(
+          -48,
+          17,
+          2,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+          -5,
+          -12
+        );
+
+        ctx.lineTo(
+          10,
+          -32
+        );
+
+        ctx.lineTo(
+          18,
+          -8
+        );
+
+        ctx.closePath();
+
+        ctx.fill();
+
+
+        this.drawSelectionRing(
+          ctx,
+          58
+        );
+
+        ctx.restore();
+      }
+    }
+
+
+    /* =========================================================
+       WHALE SHARK
+    ========================================================== */
+
+    class WhaleShark
+      extends MarineCreature {
+
+      constructor(x,y) {
+
+        super(
+          'hiu_paus',
+          'hiu_pari',
+          x,
+          y
+        );
+
+        this.scale *= 1.4;
+
+        this.hitRadius =
+          65 * this.scale;
+      }
+
+
+      draw(ctx) {
+
+        ctx.save();
+
+        ctx.translate(
+          this.x,
+          this.y
+        );
+
+        if (!this.facingLeft) {
+          ctx.scale(-1,1);
+        }
+
+        ctx.scale(
+          this.scale,
+          this.scale
+        );
+
+
+        const tailWave =
+          Math.sin(
+            this.phase * 1.5
+          ) * 6;
+
+
+        ctx.fillStyle =
+          '#1e293b';
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+          -60,
+          0
+        );
+
+        ctx.quadraticCurveTo(
+          -20,
+          -26,
+          50,
+          0
+        );
+
+        ctx.quadraticCurveTo(
+          -20,
+          24,
+          -60,
+          0
+        );
+
+        ctx.fill();
+
+
+        ctx.fillStyle =
+          '#0f172a';
+
+        ctx.fillRect(
+          -62,
+          -10,
+          6,
+          20
+        );
+
+
+        ctx.fillStyle =
+          'rgba(255,255,255,0.7)';
+
+
+        for (
+          let i = -30;
+          i < 30;
+          i += 12
+        ) {
+
+          for (
+            let j = -10;
+            j <= 10;
+            j += 10
+          ) {
+
+            ctx.beginPath();
+
+            ctx.arc(
+              i,
+              j,
+              1.8,
+              0,
+              Math.PI * 2
+            );
+
+            ctx.fill();
+          }
+        }
+
+
+        ctx.fillStyle =
+          '#1e293b';
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+          50,
+          0
+        );
+
+        ctx.lineTo(
+          75 + tailWave,
+          -25
+        );
+
+        ctx.lineTo(
+          65,
+          0
+        );
+
+        ctx.lineTo(
+          75 + tailWave,
+          20
+        );
+
+        ctx.closePath();
+
+        ctx.fill();
+
+
+        this.drawSelectionRing(
+          ctx,
+          70
+        );
+
+        ctx.restore();
+      }
+    }
+
+
+    /* =========================================================
+       MANTA
+    ========================================================== */
+
+    class MantaRay
+      extends MarineCreature {
+
+      constructor(x,y) {
+
+        super(
+          'pari_manta',
+          'hiu_pari',
+          x,
+          y
+        );
+
+        this.hitRadius =
+          52 * this.scale;
+      }
+
+
+      draw(ctx) {
+
+        ctx.save();
+
+        ctx.translate(
+          this.x,
+          this.y
+        );
+
+        if (!this.facingLeft) {
+          ctx.scale(-1,1);
+        }
+
+        ctx.scale(
+          this.scale,
+          this.scale
+        );
+
+
+        const wingWave =
+          Math.sin(
+            this.phase * 2
+          ) * 7;
+
+
+        ctx.strokeStyle =
+          '#0f172a';
+
+        ctx.lineWidth = 2;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+          25,
+          0
+        );
+
+        ctx.quadraticCurveTo(
+          50,
+          wingWave,
+          78,
+          4
+        );
+
+        ctx.stroke();
+
+
+        ctx.fillStyle =
+          '#1e293b';
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+          -35,
+          0
+        );
+
+        ctx.quadraticCurveTo(
+          -10,
+          -32 - wingWave,
+          25,
+          -5
+        );
+
+        ctx.quadraticCurveTo(
+          15,
+          0,
+          25,
+          5
+        );
+
+        ctx.quadraticCurveTo(
+          -10,
+          32 + wingWave,
+          -35,
+          0
+        );
+
+        ctx.fill();
+
+
+        ctx.fillStyle =
+          '#334155';
+
+        ctx.beginPath();
+
+        ctx.ellipse(
+          -5,
+          0,
+          12,
+          6,
+          0,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+
+        this.drawSelectionRing(
+          ctx,
+          55
+        );
+
+        ctx.restore();
+      }
+    }
+
+
+    /* =========================================================
+       JELLYFISH
+    ========================================================== */
+
+    class Jellyfish
+      extends MarineCreature {
+
+      constructor(type,x,y) {
+
+        super(
+          type,
+          'ubur',
+          x,
+          y
+        );
+
+        this.isBox =
+          type === 'ubur_kotak';
+
+        this.hitRadius =
+          32 * this.scale;
+      }
+
+
+      draw(ctx) {
+
+        ctx.save();
+
+        ctx.translate(
+          this.x,
+          this.y
+        );
+
+        ctx.scale(
+          this.scale,
+          this.scale
+        );
+
+
+        const pulse =
+          Math.sin(
+            this.phase * 2.2
+          ) * 0.15;
+
+
+        ctx.strokeStyle =
+          this.isBox
+            ? 'rgba(56,189,248,0.7)'
+            : 'rgba(216,180,254,0.6)';
+
+        ctx.lineWidth = 1.6;
+
+
+        for (
+          let i = -3;
+          i <= 3;
+          i++
+        ) {
+
+          ctx.beginPath();
+
+          ctx.moveTo(
+            i * 5,
+            10
+          );
+
+          const wave =
+            Math.sin(
+              this.phase * 3 + i
+            ) * 6;
+
+          ctx.quadraticCurveTo(
+            i * 6 + wave,
+            30,
+            i * 4 - wave,
+            55
+          );
+
+          ctx.stroke();
+        }
+
+
+        const grad =
+          ctx.createRadialGradient(
+            0,
+            -5,
+            2,
+            0,
+            -5,
+            25
+          );
+
+
+        if (this.isBox) {
+
+          grad.addColorStop(
+            0,
+            'rgba(186,230,253,0.9)'
+          );
+
+          grad.addColorStop(
+            1,
+            'rgba(14,165,233,0.2)'
+          );
+
+        } else {
+
+          grad.addColorStop(
+            0,
+            'rgba(244,214,255,0.85)'
+          );
+
+          grad.addColorStop(
+            1,
+            'rgba(147,51,234,0.15)'
+          );
+        }
+
+
+        ctx.fillStyle =
+          grad;
+
+
+        ctx.beginPath();
+
+
+        if (this.isBox) {
+
+          ctx.roundRect(
+            -18 - pulse * 8,
+            -20,
+            36 + pulse * 16,
+            28,
+            8
+          );
+
+        } else {
+
+          ctx.arc(
+            0,
+            0,
+            22 + pulse * 10,
+            Math.PI,
+            0,
+            false
+          );
+
+          ctx.quadraticCurveTo(
+            0,
+            10 - pulse * 5,
+            -22 - pulse * 10,
+            0
+          );
+        }
+
+
+        ctx.fill();
+
+
+        this.drawSelectionRing(
+          ctx,
+          40
+        );
+
+        ctx.restore();
+      }
+    }
+
+
+    /* =========================================================
+       OCTOPUS
+    ========================================================== */
+
+    class Octopus
+      extends MarineCreature {
+
+      constructor(x,y) {
+
+        super(
+          'gurita_raksasa',
+          'eksotis',
+          x,
+          y
+        );
+
+        this.hitRadius =
+          40 * this.scale;
+      }
+
+
+      draw(ctx) {
+
+        ctx.save();
+
+        ctx.translate(
+          this.x,
+          this.y
+        );
+
+        ctx.scale(
+          this.scale,
+          this.scale
+        );
+
+
+        ctx.strokeStyle =
+          '#991b1b';
+
+        ctx.lineWidth = 3.5;
+
+
+        for (
+          let i = 0;
+          i < 8;
+          i++
+        ) {
+
+          const angle =
+            (i / 8) *
+            Math.PI *
+            2 +
+            Math.sin(
+              this.phase + i
+            ) *
+            0.2;
+
+
+          ctx.beginPath();
+
+          ctx.moveTo(
+            0,
+            0
+          );
+
+
+          const tx =
+            Math.cos(angle) *
+            35;
+
+          const ty =
+            Math.sin(angle) *
+            35;
+
+
+          ctx.quadraticCurveTo(
+            tx * 0.5,
+            ty * 0.5 +
+            Math.sin(
+              this.phase * 2 + i
+            ) * 10,
+            tx,
+            ty
+          );
+
+          ctx.stroke();
+        }
+
+
+        ctx.fillStyle =
+          '#b91c1c';
+
+        ctx.beginPath();
+
+        ctx.ellipse(
+          0,
+          -8,
+          18,
+          14,
+          0,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+
+        ctx.fillStyle =
+          '#fef08a';
+
+
+        ctx.beginPath();
+
+        ctx.arc(
+          -6,
+          -6,
+          3,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+
+        ctx.beginPath();
+
+        ctx.arc(
+          6,
+          -6,
+          3,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+
+        this.drawSelectionRing(
+          ctx,
+          45
+        );
+
+        ctx.restore();
+      }
+    }
+
+
+    /* =========================================================
+       SEAHORSE
+    ========================================================== */
+
+    class Seahorse
+      extends MarineCreature {
+
+      constructor(x,y) {
+
+        super(
+          'kuda_laut',
+          'terumbu',
+          x,
+          y
+        );
+
+        this.hitRadius =
+          28 * this.scale;
+      }
+
+
+      draw(ctx) {
+
+        ctx.save();
+
+        ctx.translate(
+          this.x,
+          this.y
+        );
+
+        ctx.scale(
+          this.scale,
+          this.scale
+        );
+
+
+        ctx.strokeStyle =
+          '#d97706';
+
+        ctx.lineWidth = 3.5;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+          0,
+          10
+        );
+
+        ctx.quadraticCurveTo(
+          12,
+          25,
+          -2,
+          35
+        );
+
+        ctx.stroke();
+
+
+        ctx.fillStyle =
+          '#f59e0b';
+
+        ctx.beginPath();
+
+        ctx.ellipse(
+          0,
+          2,
+          8,
+          14,
+          0,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+
+        ctx.beginPath();
+
+        ctx.ellipse(
+          -4,
+          -14,
+          7,
+          5,
+          -0.4,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+
+        ctx.fillRect(
+          -12,
+          -15,
+          8,
+          3
+        );
+
+
+        ctx.fillStyle =
+          '#0f172a';
+
+        ctx.beginPath();
+
+        ctx.arc(
+          -5,
+          -15,
+          1.5,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+
+        this.drawSelectionRing(
+          ctx,
+          35
+        );
+
+        ctx.restore();
+      }
+    }
+
+
+    /* =========================================================
+       REEF FISH
+    ========================================================== */
+
+    class ReefFish
+      extends MarineCreature {
+
+      constructor(type,x,y) {
+
+        super(
+          type,
+          'terumbu',
+          x,
+          y
+        );
+
+        this.scale *= 0.8;
+
+        this.hitRadius =
+          25 * this.scale;
+      }
+
+
+      draw(ctx) {
+
+        ctx.save();
+
+        ctx.translate(
+          this.x,
+          this.y
+        );
+
+        if (!this.facingLeft) {
+          ctx.scale(-1,1);
+        }
+
+        ctx.scale(
+          this.scale,
+          this.scale
+        );
+
+
+        const tailWiggle =
+          Math.sin(
+            this.phase * 4
+          ) * 4;
+
+
+        if (
+          this.type === 'ikan_nemo'
+        ) {
+
+          ctx.fillStyle =
+            '#ea580c';
+
+          ctx.beginPath();
+
+          ctx.moveTo(
+            15,
+            0
+          );
+
+          ctx.lineTo(
+            28,
+            -10 + tailWiggle
+          );
+
+          ctx.lineTo(
+            28,
+            10 + tailWiggle
+          );
+
+          ctx.closePath();
+
+          ctx.fill();
+
+
+          ctx.beginPath();
+
+          ctx.ellipse(
+            -5,
+            0,
+            20,
+            12,
+            0,
+            0,
+            Math.PI * 2
+          );
+
+          ctx.fill();
+
+
+          ctx.fillStyle =
+            '#ffffff';
+
+          ctx.fillRect(
+            -12,
+            -11,
+            5,
+            22
+          );
+
+          ctx.fillRect(
+            -2,
+            -11,
+            4,
+            22
+          );
+
+
+        } else if (
+          this.type === 'ikan_dory'
+        ) {
+
+          ctx.fillStyle =
+            '#2563eb';
+
+          ctx.beginPath();
+
+          ctx.ellipse(
+            -5,
+            0,
+            18,
+            13,
+            0,
+            0,
+            Math.PI * 2
+          );
+
+          ctx.fill();
+
+
+          ctx.fillStyle =
+            '#facc15';
+
+          ctx.beginPath();
+
+          ctx.moveTo(
+            12,
+            0
+          );
+
+          ctx.lineTo(
+            26,
+            -12 + tailWiggle
+          );
+
+          ctx.lineTo(
+            26,
+            12 + tailWiggle
+          );
+
+          ctx.closePath();
+
+          ctx.fill();
+
+
+        } else if (
+          this.type === 'ikan_buntal'
+        ) {
+
+          ctx.fillStyle =
+            '#ca8a04';
+
+          ctx.beginPath();
+
+          ctx.arc(
+            0,
+            0,
+            16,
+            0,
+            Math.PI * 2
+          );
+
+          ctx.fill();
+
+
+          ctx.strokeStyle =
+            '#854d0e';
+
+          ctx.lineWidth = 1.5;
+
+
+          for (
+            let a = 0;
+            a < Math.PI * 2;
+            a += 0.8
+          ) {
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+              Math.cos(a) * 16,
+              Math.sin(a) * 16
+            );
+
+            ctx.lineTo(
+              Math.cos(a) * 20,
+              Math.sin(a) * 20
+            );
+
+            ctx.stroke();
+          }
+
+
+        } else {
+
+          ctx.fillStyle =
+            '#475569';
+
+          ctx.beginPath();
+
+          ctx.ellipse(
+            -5,
+            0,
+            22,
+            11,
+            0,
+            0,
+            Math.PI * 2
+          );
+
+          ctx.fill();
+
+
+          ctx.fillStyle =
+            '#ea580c';
+
+          ctx.fillRect(
+            -22,
+            -2,
+            5,
+            4
+          );
+        }
+
+
+        ctx.fillStyle =
+          '#000';
+
+        ctx.beginPath();
+
+        ctx.arc(
+          -15,
+          -3,
+          2,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+
+        this.drawSelectionRing(
+          ctx,
+          32
+        );
+
+        ctx.restore();
+      }
+    }
+
+
+    /* =========================================================
+       ANGLERFISH
+    ========================================================== */
+
+    class Anglerfish
+      extends MarineCreature {
+
+      constructor(x,y) {
+
+        super(
+          'ikan_sungut',
+          'eksotis',
+          x,
+          y
+        );
+
+        this.hitRadius =
+          38 * this.scale;
+      }
+
+
+      draw(ctx) {
+
+        ctx.save();
+
+        ctx.translate(
+          this.x,
+          this.y
+        );
+
+        if (!this.facingLeft) {
+          ctx.scale(-1,1);
+        }
+
+        ctx.scale(
+          this.scale,
+          this.scale
+        );
+
+
+        ctx.fillStyle =
+          '#172554';
+
+        ctx.beginPath();
+
+        ctx.arc(
+          0,
+          0,
+          22,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+
+        ctx.fillStyle =
+          '#ffffff';
+
+
+        for (
+          let t = -12;
+          t <= 12;
+          t += 6
+        ) {
+
+          ctx.beginPath();
+
+          ctx.moveTo(
+            -20,
+            t
+          );
+
+          ctx.lineTo(
+            -26,
+            t + 2
+          );
+
+          ctx.lineTo(
+            -20,
+            t + 4
+          );
+
+          ctx.fill();
+        }
+
+
+        ctx.strokeStyle =
+          '#38bdf8';
+
+        ctx.lineWidth = 2;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+          -5,
+          -20
+        );
+
+        ctx.quadraticCurveTo(
+          -15,
+          -40,
+          -32,
+          -25
+        );
+
+        ctx.stroke();
+
+
+        ctx.fillStyle =
+          '#7dd3fc';
+
+        ctx.shadowColor =
+          '#38bdf8';
+
+        ctx.shadowBlur = 15;
+
+        ctx.beginPath();
+
+        ctx.arc(
+          -32,
+          -25,
+          5,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+        ctx.shadowBlur = 0;
+
+
+        this.drawSelectionRing(
+          ctx,
+          42
+        );
+
+        ctx.restore();
+      }
+    }
+
+
+    /* =========================================================
+       LIONFISH
+    ========================================================== */
+
+    class Lionfish
+      extends MarineCreature {
+
+      constructor(x,y) {
+
+        super(
+          'ikan_singa',
+          'eksotis',
+          x,
+          y
+        );
+
+        this.hitRadius =
+          36 * this.scale;
+      }
+
+
+      draw(ctx) {
+
+        ctx.save();
+
+        ctx.translate(
+          this.x,
+          this.y
+        );
+
+        if (!this.facingLeft) {
+          ctx.scale(-1,1);
+        }
+
+        ctx.scale(
+          this.scale,
+          this.scale
+        );
+
+
+        ctx.strokeStyle =
+          '#b91c1c';
+
+        ctx.lineWidth = 1.8;
+
+
+        for (
+          let a = -1.5;
+          a <= 1.5;
+          a += 0.3
+        ) {
+
+          ctx.beginPath();
+
+          ctx.moveTo(
+            0,
+            -5
+          );
+
+          ctx.lineTo(
+            Math.cos(a) * 35,
+            Math.sin(a) * 35 - 10
+          );
+
+          ctx.stroke();
+        }
+
+
+        ctx.fillStyle =
+          '#9a3412';
+
+        ctx.beginPath();
+
+        ctx.ellipse(
+          -4,
+          0,
+          18,
+          11,
+          0,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+
+        ctx.fillStyle =
+          '#fef08a';
+
+        ctx.fillRect(
+          -10,
+          -10,
+          4,
+          20
+        );
+
+        ctx.fillRect(
+          -2,
+          -10,
+          4,
+          20
+        );
+
+
+        this.drawSelectionRing(
+          ctx,
+          40
+        );
+
+        ctx.restore();
+      }
+    }
+
+
+    /* =========================================================
+       MORAY
+    ========================================================== */
+
+    class MorayEel
+      extends MarineCreature {
+
+      constructor(x,y) {
+
+        super(
+          'belut_moray',
+          'eksotis',
+          x,
+          y
+        );
+
+        this.hitRadius =
+          35 * this.scale;
+      }
+
+
+      draw(ctx) {
+
+        ctx.save();
+
+        ctx.translate(
+          this.x,
+          this.y
+        );
+
+        if (!this.facingLeft) {
+          ctx.scale(-1,1);
+        }
+
+        ctx.scale(
+          this.scale,
+          this.scale
+        );
+
+
+        const wave =
+          Math.sin(
+            this.phase * 3
+          ) * 6;
+
+
+        ctx.strokeStyle =
+          '#15803d';
+
+        ctx.lineWidth = 8;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+          -30,
+          0
+        );
+
+        ctx.quadraticCurveTo(
+          -10,
+          wave,
+          10,
+          -wave
+        );
+
+        ctx.quadraticCurveTo(
+          25,
+          wave,
+          45,
+          0
+        );
+
+        ctx.stroke();
+
+
+        ctx.fillStyle =
+          '#166534';
+
+        ctx.beginPath();
+
+        ctx.arc(
+          -30,
+          0,
+          6,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+
+        this.drawSelectionRing(
+          ctx,
+          40
+        );
+
+        ctx.restore();
+      }
+    }
+
+
+    /* =========================================================
+       CREATURE INITIALIZATION
+    ========================================================== */
+
+    let creatures = [
+
+      new Turtle(
+        width * 0.25,
+        height * 0.35
+      ),
+
+      new HammerheadShark(
+        width * 0.7,
+        height * 0.25
+      ),
+
+      new WhaleShark(
+        width * 0.45,
+        height * 0.45
+      ),
+
+      new MantaRay(
+        width * 0.8,
+        height * 0.55
+      ),
+
+      new Jellyfish(
+        'ubur_bulan',
+        width * 0.15,
+        height * 0.6
+      ),
+
+      new Jellyfish(
+        'ubur_kotak',
+        width * 0.88,
+        height * 0.35
+      ),
+
+      new Octopus(
+        width * 0.3,
+        height * 0.7
+      ),
+
+      new Seahorse(
+        width * 0.2,
+        height * 0.5
+      ),
+
+      new ReefFish(
+        'ikan_nemo',
+        width * 0.38,
+        height * 0.55
+      ),
+
+      new ReefFish(
+        'ikan_dory',
+        width * 0.62,
+        height * 0.38
+      ),
+
+      new ReefFish(
+        'ikan_buntal',
+        width * 0.52,
+        height * 0.62
+      ),
+
+      new ReefFish(
+        'ikan_naso',
+        width * 0.75,
+        height * 0.68
+      ),
+
+      new Lionfish(
+        width * 0.6,
+        height * 0.52
+      ),
+
+      new Anglerfish(
+        width * 0.12,
+        height * 0.75
+      ),
+
+      new MorayEel(
+        width * 0.82,
+        height * 0.78
+      )
+
+    ];
+
+
+    /* =========================================================
+       ENVIRONMENT
+    ========================================================== */
+
+    function drawEnvironment(time) {
+
+      const bgGrad =
+        ctx.createLinearGradient(
+          0,
+          0,
+          0,
+          height
+        );
+
+
+      bgGrad.addColorStop(
+        0,
+        '#0a3254'
+      );
+
+      bgGrad.addColorStop(
+        0.4,
+        '#051d33'
+      );
+
+      bgGrad.addColorStop(
+        1,
+        '#020b14'
+      );
+
+
+      ctx.fillStyle =
+        bgGrad;
+
+      ctx.fillRect(
+        0,
+        0,
+        width,
+        height
+      );
+
+
+      /* Sun rays */
+
+      if (showRays) {
+
+        ctx.save();
+
+        ctx.globalCompositeOperation =
+          'screen';
+
+
+        const numRays = 8;
+
+
+        for (
+          let i = 0;
+          i < numRays;
+          i++
+        ) {
+
+          const rayX =
+            (width / numRays) *
+            i +
+            Math.sin(
+              time * 0.0005 + i
+            ) * 45;
+
+
+          const rayWidth =
+            70 +
+            Math.sin(
+              time * 0.001 + i
+            ) * 35;
+
+
+          const rayGrad =
+            ctx.createLinearGradient(
+              rayX,
+              0,
+              rayX + 130,
+              height
+            );
+
+
+          rayGrad.addColorStop(
+            0,
+            'rgba(125,211,252,0.16)'
+          );
+
+          rayGrad.addColorStop(
+            0.8,
+            'rgba(125,211,252,0.02)'
+          );
+
+          rayGrad.addColorStop(
+            1,
+            'transparent'
+          );
+
+
+          ctx.fillStyle =
+            rayGrad;
+
+
+          ctx.beginPath();
+
+          ctx.moveTo(
+            rayX,
+            0
+          );
+
+          ctx.lineTo(
+            rayX + rayWidth,
+            0
+          );
+
+          ctx.lineTo(
+            rayX + rayWidth + 200,
+            height
+          );
+
+          ctx.lineTo(
+            rayX + 130,
+            height
+          );
+
+          ctx.closePath();
+
+          ctx.fill();
+        }
+
+
+        ctx.restore();
+      }
+
+
+      /* Seabed */
+
+      ctx.fillStyle =
+        '#020e1a';
+
+      ctx.beginPath();
+
+      ctx.moveTo(
+        0,
+        height
+      );
+
+      ctx.quadraticCurveTo(
+        width * 0.25,
+        height - 60,
+        width * 0.5,
+        height - 35
+      );
+
+      ctx.quadraticCurveTo(
+        width * 0.75,
+        height - 15,
+        width,
+        height - 70
+      );
+
+      ctx.lineTo(
+        width,
+        height
+      );
+
+      ctx.closePath();
+
+      ctx.fill();
+
+
+      /* Seaweed */
+
+      ctx.strokeStyle =
+        '#0e4435';
+
+      ctx.lineWidth = 4.5;
+
+      ctx.lineCap = 'round';
+
+
+      const plantPositions = [
+        0.06,
+        0.14,
+        0.24,
+        0.42,
+        0.58,
+        0.76,
+        0.88,
+        0.94
+      ];
+
+
+      plantPositions.forEach(
+        (pos, idx) => {
+
+          const px =
+            width * pos;
+
+          const py =
+            height - 20;
+
+          const sway =
+            Math.sin(
+              time * 0.0015 + idx
+            ) * 18;
+
+
+          ctx.beginPath();
+
+          ctx.moveTo(
+            px,
+            py
+          );
+
+          ctx.quadraticCurveTo(
+            px + sway * 0.5,
+            py - 70,
+            px + sway,
+            py - 130
+          );
+
+          ctx.stroke();
+        }
+      );
+
+    }
+
+
+    /* =========================================================
+       AQUARIUM AUDIO
+    ========================================================== */
+
+    let audioCtx = null;
+
+    let isAudioPlaying = false;
+
+
+    function initAudio() {
+
+      if (audioCtx) {
+        return;
+      }
+
+
+      const AudioContext =
+        window.AudioContext ||
+        window.webkitAudioContext;
+
+
+      audioCtx =
+        new AudioContext();
+
+
+      const bufferSize =
+        audioCtx.sampleRate * 2;
+
+
+      const noiseBuffer =
+        audioCtx.createBuffer(
+          1,
+          bufferSize,
+          audioCtx.sampleRate
+        );
+
+
+      const output =
+        noiseBuffer.getChannelData(0);
+
+
+      let lastOut = 0;
+
+
+      for (
+        let i = 0;
+        i < bufferSize;
+        i++
+      ) {
+
+        const white =
+          Math.random() * 2 - 1;
+
+        output[i] =
+          (
+            lastOut +
+            (0.02 * white)
+          ) / 1.02;
+
+        lastOut =
+          output[i];
+
+        output[i] *= 3.2;
+      }
+
+
+      const whiteNoise =
+        audioCtx.createBufferSource();
+
+      whiteNoise.buffer =
+        noiseBuffer;
+
+      whiteNoise.loop = true;
+
+
+      const lowpass =
+        audioCtx.createBiquadFilter();
+
+      lowpass.type =
+        'lowpass';
+
+      lowpass.frequency.value =
+        260;
+
+
+      const gain =
+        audioCtx.createGain();
+
+      gain.gain.value =
+        0.14;
+
+
+      whiteNoise.connect(
+        lowpass
+      );
+
+      lowpass.connect(
+        gain
+      );
+
+      gain.connect(
+        audioCtx.destination
+      );
+
+
+      whiteNoise.start();
+    }
+
+
+    function toggleAudio() {
+
+      if (!audioCtx) {
+        initAudio();
+      }
+
+
+      if (
+        audioCtx.state ===
+        'suspended'
+      ) {
+
+        audioCtx.resume();
+
+        isAudioPlaying = true;
+
+      } else if (
+        audioCtx.state ===
+        'running'
+      ) {
+
+        audioCtx.suspend();
+
+        isAudioPlaying = false;
+      }
+
+
+      document
+        .getElementById(
+          'soundIconOff'
+        )
+        .classList.toggle(
+          'hidden',
+          isAudioPlaying
+        );
+
+
+      document
+        .getElementById(
+          'soundIconOn'
+        )
+        .classList.toggle(
+          'hidden',
+          !isAudioPlaying
+        );
+
+
+      document
+        .getElementById(
+          'soundLabel'
+        )
+        .innerText =
+        isAudioPlaying
+          ? 'Suara: Aktif'
+          : 'Suara: Mati';
+    }
+
+
+    /* =========================================================
+       FILTER
+    ========================================================== */
+
+    function setFilter(category) {
+
+      activeFilter =
+        category;
+
+
+      document
+        .querySelectorAll(
+          '[id^="filter-"], [id^="m-filter-"]'
+        )
+        .forEach(btn => {
+
+          btn.classList.remove(
+            'active'
+          );
+
+          btn.classList.add(
+            'text-slate-300'
+          );
+
+        });
+
+
+      const targetBtn =
+        document.getElementById(
+          `filter-${category}`
+        );
+
+
+      const mTargetBtn =
+        document.getElementById(
+          `m-filter-${category}`
+        );
+
+
+      if (targetBtn) {
+
+        targetBtn.classList.add(
+          'active'
+        );
+
+        targetBtn.classList.remove(
+          'text-slate-300'
+        );
+      }
+
+
+      if (mTargetBtn) {
+
+        mTargetBtn.classList.add(
+          'active'
+        );
+
+        mTargetBtn.classList.remove(
+          'text-slate-300'
+        );
+      }
+
+    }
+
+
+    function handleSearch(val) {
+
+      searchQuery =
+        val
+          .toLowerCase()
+          .trim();
+    }
+
+
+    function toggleRays() {
+
+      showRays =
+        !showRays;
+
+
+      document
+        .getElementById(
+          'raysToggleBtn'
+        )
+        .innerText =
+        `Cahaya Sunray: ${
+          showRays
+            ? 'ON'
+            : 'OFF'
+        }`;
+    }
+
+
+    /* =========================================================
+       ADD CREATURE
+    ========================================================== */
+
+    function addRandomCreature() {
+
+      const keys =
+        Object.keys(
+          SPECIES_DATA
+        );
+
+
+      const picked =
+        keys[
+          Math.floor(
+            Math.random() *
+            keys.length
+          )
+        ];
+
+
+      const rx =
+        width * 0.1 +
+        Math.random() *
+        width * 0.8;
+
+
+      const ry =
+        height * 0.2 +
+        Math.random() *
+        height * 0.5;
+
+
+      if (
+        picked ===
+        'penyu_hijau'
+      ) {
+
+        creatures.push(
+          new Turtle(
+            rx,
+            ry
+          )
+        );
+
+      } else if (
+        picked ===
+        'hiu_martil'
+      ) {
+
+        creatures.push(
+          new HammerheadShark(
+            rx,
+            ry
+          )
+        );
+
+      } else if (
+        picked ===
+        'hiu_paus'
+      ) {
+
+        creatures.push(
+          new WhaleShark(
+            rx,
+            ry
+          )
+        );
+
+      } else if (
+        picked ===
+        'pari_manta'
+      ) {
+
+        creatures.push(
+          new MantaRay(
+            rx,
+            ry
+          )
+        );
+
+      } else if (
+        picked.startsWith(
+          'ubur'
+        )
+      ) {
+
+        creatures.push(
+          new Jellyfish(
+            picked,
+            rx,
+            ry
+          )
+        );
+
+      } else if (
+        picked ===
+        'gurita_raksasa'
+      ) {
+
+        creatures.push(
+          new Octopus(
+            rx,
+            ry
+          )
+        );
+
+      } else if (
+        picked ===
+        'kuda_laut'
+      ) {
+
+        creatures.push(
+          new Seahorse(
+            rx,
+            ry
+          )
+        );
+
+      } else if (
+        picked ===
+        'ikan_sungut'
+      ) {
+
+        creatures.push(
+          new Anglerfish(
+            rx,
+            ry
+          )
+        );
+
+      } else if (
+        picked ===
+        'ikan_singa'
+      ) {
+
+        creatures.push(
+          new Lionfish(
+            rx,
+            ry
+          )
+        );
+
+      } else if (
+        picked ===
+        'belut_moray'
+      ) {
+
+        creatures.push(
+          new MorayEel(
+            rx,
+            ry
+          )
+        );
+
+      } else {
+
+        creatures.push(
+          new ReefFish(
+            picked,
+            rx,
+            ry
+          )
+        );
+      }
+
+    }
+
+
+    /* =========================================================
+       RESET
+    ========================================================== */
+
+    function resetCamera() {
+
+      closeInfoCard();
+
+      setFilter(
+        'semua'
+      );
+
+      searchQuery =
+        '';
+
+
+      const input =
+        document.getElementById(
+          'searchInput'
+        );
+
+
+      if (input) {
+        input.value = '';
+      }
+
+    }
+
+
+    /* =========================================================
+       FULLSCREEN
+    ========================================================== */
+
+    function toggleFullscreen() {
+
+      if (
+        !document.fullscreenElement
+      ) {
+
+        document.documentElement
+          .requestFullscreen();
+
+      } else {
+
+        if (
+          document.exitFullscreen
+        ) {
+
+          document.exitFullscreen();
+        }
+
+      }
+    }
+
+
+    /* =========================================================
+       MOUSE
+    ========================================================== */
+
+    canvas.addEventListener(
+      'mousemove',
+      e => {
+
+        mouse.x =
+          e.clientX;
+
+        mouse.y =
+          e.clientY;
+
+
+        let foundHover =
+          false;
+
+
+        creatures.forEach(
+          c => {
+
+            if (
+              c.containsPoint(
+                mouse.x,
+                mouse.y
+              )
+            ) {
+
+              c.isHovered =
+                true;
+
+              foundHover =
+                true;
+
+            } else {
+
+              c.isHovered =
+                false;
+            }
+
+          }
+        );
+
+
+        canvas.style.cursor =
+          foundHover
+            ? 'pointer'
+            : 'crosshair';
+
+      }
+    );
+
+
+    canvas.addEventListener(
+      'click',
+      e => {
+
+        const clicked =
+          creatures.find(
+            c =>
+              c.containsPoint(
+                e.clientX,
+                e.clientY
+              )
+          );
+
+
+        if (clicked) {
+
+          openInfoCard(
+            clicked
+          );
+
+        } else {
+
+          closeInfoCard();
+        }
+
+      }
+    );
+
+
+    /* =========================================================
+       INFO CARD
+    ========================================================== */
+
+    function openInfoCard(
+      creature
+    ) {
+
+      if (
+        focusedCreature
+      ) {
+
+        focusedCreature
+          .isFocused = false;
+      }
+
+
+      focusedCreature =
+        creature;
+
+
+      creature.isFocused =
+        true;
+
+
+      const data =
+        SPECIES_DATA[
+          creature.type
+        ];
+
+
+      if (!data) {
+        return;
+      }
+
+
+      document
+        .getElementById(
+          'cardBadge'
+        )
+        .innerText =
+        data.badge;
+
+
+      document
+        .getElementById(
+          'cardTitle'
+        )
+        .innerText =
+        data.title;
+
+
+      document
+        .getElementById(
+          'cardLatin'
+        )
+        .innerText =
+        data.latin;
+
+
+      document
+        .getElementById(
+          'cardDepth'
+        )
+        .innerText =
+        `Kedalaman: ${data.depth}`;
+
+
+      document
+        .getElementById(
+          'cardHabitat'
+        )
+        .innerText =
+        data.habitat;
+
+
+      document
+        .getElementById(
+          'cardDiet'
+        )
+        .innerText =
+        data.diet;
+
+
+      document
+        .getElementById(
+          'cardConservation'
+        )
+        .innerText =
+        data.conservation;
+
+
+      document
+        .getElementById(
+          'cardDesc'
+        )
+        .innerText =
+        data.desc;
+
+
+      document
+        .getElementById(
+          'cardFact'
+        )
+        .innerText =
+        data.fact;
+
+
+      document
+        .getElementById(
+          'depthGauge'
+        )
+        .innerText =
+        `${(
+          creature.y / 18
+        ).toFixed(1)} m`;
+
+
+      const card =
+        document.getElementById(
+          'infoCard'
+        );
+
+
+      card.classList.remove(
+        'opacity-0',
+        'scale-90',
+        'pointer-events-none'
+      );
+
+
+      card.classList.add(
+        'opacity-100',
+        'scale-100'
+      );
+
+    }
+
+
+    function closeInfoCard() {
+
+      if (
+        focusedCreature
+      ) {
+
+        focusedCreature
+          .isFocused = false;
+
+        focusedCreature =
+          null;
+      }
+
+
+      const card =
+        document.getElementById(
+          'infoCard'
+        );
+
+
+      card.classList.add(
+        'opacity-0',
+        'scale-90',
+        'pointer-events-none'
+      );
+
+
+      card.classList.remove(
+        'opacity-100',
+        'scale-100'
+      );
+
+    }
+
+
+    function releaseFocus() {
+
+      closeInfoCard();
+    }
+
+
+    /* =========================================================
+       ANIMATION
+    ========================================================== */
+
+    function animate(time = 0) {
+
+      drawEnvironment(
+        time
+      );
+
+
+      bubbles.forEach(
+        b => {
+
+          b.update();
+
+          b.draw();
+
+        }
+      );
+
+
+      creatures.forEach(
+        c => {
+
+          const matchesCategory =
+            activeFilter ===
+              'semua' ||
+            c.category ===
+              activeFilter;
+
+
+          const species =
+            SPECIES_DATA[
+              c.type
+            ];
+
+
+          const matchesSearch =
+            !searchQuery ||
+            (
+              species &&
+              (
+                species.title
+                  .toLowerCase()
+                  .includes(
+                    searchQuery
+                  ) ||
+                species.latin
+                  .toLowerCase()
+                  .includes(
+                    searchQuery
+                  )
+              )
+            );
+
+
+          if (
+            matchesCategory &&
+            matchesSearch
+          ) {
+
+            c.update(
+              time
+            );
+
+            c.draw(
+              ctx
+            );
+          }
+
+        }
+      );
+
+
+      requestAnimationFrame(
+        animate
+      );
+
+    }
+
+
+    /* =========================================================
+       WANDA LETTER
+    ========================================================== */
+
+    const wandaOverlay =
+      document.getElementById(
+        'wandaLetterOverlay'
+      );
+
+
+    const wandaBgm =
+      document.getElementById(
+        'wandaBgm'
+      );
+
+
+    const wandaMusicIndicator =
+      document.getElementById(
+        'wandaMusicIndicator'
+      );
+
+
+    const wandaP1 =
+      document.getElementById(
+        'wanda-p1'
+      );
+
+
+    const wandaP2 =
+      document.getElementById(
+        'wanda-p2'
+      );
+
+
+    const wandaP3 =
+      document.getElementById(
+        'wanda-p3'
+      );
+
+
+    /* Open Letter */
+
+    function openWandaLetter() {
+
+      closeInfoCard();
+
+
+      wandaOverlay
+        .classList.add(
+          'active'
+        );
+
+
+      /*
+        Audio hanya dimulai setelah
+        user melakukan klik tombol.
+        Ini aman dari autoplay restriction.
+      */
+
+      if (
+        wandaBgm.paused
+      ) {
+
+        wandaBgm
+          .play()
+          .then(() => {
+
+            wandaMusicIndicator
+              .classList.add(
+                'show'
+              );
+
+
+            setTimeout(() => {
+
+              wandaMusicIndicator
+                .classList.remove(
+                  'show'
+                );
+
+            }, 2500);
+
+          })
+          .catch(() => {
+
+            console.log(
+              'Browser membutuhkan interaksi untuk memainkan lagu.'
+            );
+
+          });
+
+      }
+
+    }
+
+
+    /* Close Letter */
+
+    function closeWandaLetter() {
+
+      wandaOverlay
+        .classList.remove(
+          'active'
+        );
+
+
+      /*
+        Musik tetap dihentikan
+        ketika overlay ditutup.
+      */
+
+      wandaBgm.pause();
+
+      wandaBgm.currentTime = 0;
+
+
+      resetWandaBook();
+
+    }
+
+
+    /* =========================================================
+       BOOK NAVIGATION
+    ========================================================== */
+
+    function bukaWandaP1() {
+
+      if (
+        wandaBgm.paused
+      ) {
+
+        wandaBgm
+          .play()
+          .catch(() => {});
+      }
+
+
+      wandaP1
+        .classList.add(
+          'wanda-flipped'
+        );
+
+
+      setTimeout(() => {
+
+        wandaP1.style.zIndex =
+          1;
+
+      }, 500);
+
+    }
+
+
+    function tutupWandaP1() {
+
+      wandaP1.style.zIndex =
+        3;
+
+
+      wandaP1
+        .classList.remove(
+          'wanda-flipped'
+        );
+
+    }
+
+
+    function bukaWandaP2() {
+
+      wandaP2
+        .classList.add(
+          'wanda-flipped'
+        );
+
+
+      setTimeout(() => {
+
+        wandaP2.style.zIndex =
+          2;
+
+      }, 500);
+
+    }
+
+
+    function tutupWandaP2() {
+
+      wandaP2.style.zIndex =
+        2;
+
+
+      wandaP2
+        .classList.remove(
+          'wanda-flipped'
+        );
+
+    }
+
+
+    function bukaWandaP3() {
+
+      wandaP3
+        .classList.add(
+          'wanda-flipped'
+        );
+
+
+      setTimeout(() => {
+
+        wandaP3.style.zIndex =
+          3;
+
+      }, 500);
+
+    }
+
+
+    function tutupWandaP3() {
+
+      wandaP3.style.zIndex =
+        1;
+
+
+      wandaP3
+        .classList.remove(
+          'wanda-flipped'
+        );
+
+    }
+
+
+    /* Reset book */
+
+    function resetWandaBook() {
+
+      wandaP1
+        .classList.remove(
+          'wanda-flipped'
+        );
+
+      wandaP2
+        .classList.remove(
+          'wanda-flipped'
+        );
+
+      wandaP3
+        .classList.remove(
+          'wanda-flipped'
+        );
+
+
+      wandaP1.style.zIndex =
+        3;
+
+      wandaP2.style.zIndex =
+        2;
+
+      wandaP3.style.zIndex =
+        1;
+    }
+
+
+    /* =========================================================
+       CLOSE WITH ESC
+    ========================================================== */
+
+    document.addEventListener(
+      'keydown',
+      e => {
+
+        if (
+          e.key === 'Escape' &&
+          wandaOverlay.classList.contains(
+            'active'
+          )
+        ) {
+
+          closeWandaLetter();
+
+        }
+
+      }
+    );
+
+
+    /* =========================================================
+       START
+    ========================================================== */
+
+    window.onload = () => {
+
+      animate();
+
+    };
+
+  </script>
+
 </body>
 </html>
