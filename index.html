@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catatan Spesial Buat Wanda</title>
+    <!-- Font Tulisan Tangan dari Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+    
+    <style>
+        * { box-sizing: border-box; }
+        
+        body {
+            margin: 0; display: flex; justify-content: center; align-items: center;
+            height: 100vh; background-color: #fce4ec;
+            font-family: 'Patrick Hand', cursive; 
+            padding-left: 300px;
+            overflow: hidden; 
+        }
+
+        /* --- Animasi Background (Bintang Melayang) --- */
+        .floating-star {
+            position: absolute;
+            bottom: -10%;
+            color: #ffeb3b; 
+            font-size: 24px;
+            animation: floatUp linear infinite;
+            opacity: 0.5; 
+            z-index: 0;
+            pointer-events: none;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+            100% { transform: translateY(-120vh) rotate(360deg) scale(1.5); opacity: 0; }
+        }
+
+        /* --- Desain Buku & Kertas --- */
+        .book { position: relative; width: 350px; height: 450px; perspective: 1500px; z-index: 10; }
+
+        .paper {
+            position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+            transform-style: preserve-3d; transform-origin: left center;
+            transition: transform 1s ease-in-out;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.1); border-radius: 5px 15px 15px 5px;
+        }
+
+        .front, .back {
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+            padding: 30px; background-color: #fff;
+            border-radius: 5px 15px 15px 5px;
+            background-image: radial-gradient(#f8bbd0 1px, transparent 1px); background-size: 20px 20px;
+        }
+        .back { transform: rotateY(180deg); border-radius: 15px 5px 5px 15px; }
+
+        /* --- Efek Spiral Jilid --- */
+        .front::before, .back::before {
+            content: ''; position: absolute; top: 0; bottom: 0; width: 25px;
+            background: repeating-linear-gradient(0deg, transparent, transparent 15px, #ccc 15px, #ccc 20px);
+            z-index: 10;
+        }
+        .front::before { left: 5px; } .back::before { right: 5px; }
+
+        #p1 { z-index: 3; } #p2 { z-index: 2; } #p3 { z-index: 1; }
+        .flipped { transform: rotateY(-180deg); }
+
+        /* --- Tipografi & Tombol --- */
+        .cover { background: #f48fb1; color: white; text-align: center; border: 2px solid #e91e63; }
+        h3 { color: #d81b60; border-bottom: 2px dashed #f48fb1; padding-bottom: 5px; font-size: 26px; margin-top: 0;}
+        p { font-size: 20px; line-height: 1.4; color: #444; }
+        
+        .nav-btn {
+            position: absolute; bottom: 20px; padding: 8px 15px; background: #f48fb1;
+            color: white; border: none; border-radius: 15px; cursor: pointer; 
+            font-family: 'Patrick Hand', cursive; font-size: 18px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1); transition: 0.3s;
+        }
+        .nav-btn:hover { background: #e91e63; }
+        .next-btn { right: 20px; } .prev-btn { left: 20px; }
+        .cover-btn { position: relative; bottom: 0; margin-top: 20px; background: white; color: #f48fb1; font-size: 20px;}
+        .cover-btn:hover { background: #fce4ec; color: #d81b60;}
+
+        /* --- Desain Foto Polaroid --- */
+        .polaroid {
+            background: white; padding: 10px 10px 25px 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transform: rotate(-3deg); width: 85%; margin: 15px auto; display: block;
+            transition: transform 0.3s; border: 1px solid #eee;
+        }
+        .polaroid:hover { transform: rotate(2deg) scale(1.05); z-index: 10; position: relative;}
+        .polaroid img { width: 100%; height: 160px; object-fit: cover; }
+        .polaroid-caption { text-align: center; font-size: 18px; color: #555; margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+    <!-- Audio Latar -->
+    <audio id="bgm" src="lagu.mp3" loop></audio>
+
+    <!-- Elemen Animasi Background (Bintang) -->
+    <div class="floating-star" style="left: 10%; animation-duration: 8s;">⭐</div>
+    <div class="floating-star" style="left: 30%; animation-duration: 12s; font-size: 16px;">✨</div>
+    <div class="floating-star" style="left: 60%; animation-duration: 10s;">⭐</div>
+    <div class="floating-star" style="left: 80%; animation-duration: 14s; font-size: 20px;">✨</div>
+    <div class="floating-star" style="left: 45%; animation-duration: 9s;">⭐</div>
+
+    <div class="book">
+        
+        <!-- LEMBAR 1 -->
+        <div class="paper" id="p1">
+            <div class="front cover">
+                <div style="font-size: 50px; margin-top: 30px;">🐱</div>
+                <h2 style="font-size: 32px;">Khusus Buat Wanda</h2>
+                <p style="color: #fff; font-size: 16px;">(Buka pelan-pelan ya!)</p>
+                <button class="nav-btn cover-btn" onclick="bukaP1()">Klik Buka ➔</button>
+            </div>
+            <div class="back">
+                <h3>Halo Wanda! 🐾</h3>
+                <p>Lewat catatan kecil ini, aku cuma mau bilang makasih banyak ya karena kamu udah bantuin aku.</p>
+                <p>Bantuanmu bener-bener berarti banget buat aku.</p>
+                <button class="nav-btn prev-btn" onclick="tutupP1()">🡠 Tutup</button>
+            </div>
+        </div>
+
+        <!-- LEMBAR 2 -->
+        <div class="paper" id="p2">
+            <div class="front">
+                <h3>Gantian Dong 🌷</h3>
+                <p>Karena kamu udah baik banget, boleh nggak sekarang gantian aku yang bantuin kamu?</p>
+                <p>Bantuin skripsi kamu kek, atau bantuin apa aja deh yang lagi kamu kerjain.</p>
+                <button class="nav-btn next-btn" onclick="bukaP2()">Lanjut ➔</button>
+            </div>
+            <div class="back">
+                <h3>Terima Kasih ✨</h3>
+                
+                <!-- Efek Foto Polaroid -->
+                <div class="polaroid">
+                    <!-- GANTI NAMA FILE "foto.jpg" DENGAN FOTO KAMU & WANDA (OPSIONAL) -->
+                    <img src="https://via.placeholder.com/300x200/ffb6c1/ffffff?text=Thank+You+Wanda" alt="Foto">
+                    <div class="polaroid-caption">You're the best! 📸</div>
+                </div>
+                
+                <button class="nav-btn prev-btn" onclick="tutupP2()">🡠 Kembali</button>
+            </div>
+        </div>
+
+        <!-- LEMBAR 3 -->
+        <div class="paper" id="p3">
+            <div class="front">
+                <h3>Satu Lagi... 💌</h3>
+                <p>Jujur dari kemarin aku pengen banget ngajakin kamu.</p>
+                <p>Boleh nggak aku traktir kamu sebagai tanda terima kasih? Boleh ga sih? hehe 👉👈</p>
+                <button class="nav-btn next-btn" onclick="bukaP3()">Selesai ➔</button>
+            </div>
+            <div class="back cover">
+                <h2 style="margin-top: 150px; font-size: 32px;">Ditunggu Jawabannya ⭐</h2>
+                <p style="color: white;">(Semoga jawabannya boleh ya!)</p>
+                <button class="nav-btn cover-btn" onclick="tutupP3()">Baca Lagi</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const p1 = document.getElementById("p1");
+        const p2 = document.getElementById("p2");
+        const p3 = document.getElementById("p3");
+        const bgm = document.getElementById("bgm");
+
+        function bukaP1() {
+            if (bgm.paused) {
+                bgm.play().catch(() => console.log("Perlu interaksi untuk memutar audio."));
+            }
+            p1.classList.add("flipped");
+            setTimeout(() => { p1.style.zIndex = 1; }, 500);
+        }
+        function tutupP1() {
+            p1.style.zIndex = 3;
+            p1.classList.remove("flipped");
+        }
+
+        function bukaP2() {
+            p2.classList.add("flipped");
+            setTimeout(() => { p2.style.zIndex = 2; }, 500);
+        }
+        function tutupP2() {
+            p2.style.zIndex = 2;
+            p2.classList.remove("flipped");
+        }
+
+        function bukaP3() {
+            p3.classList.add("flipped");
+            setTimeout(() => { p3.style.zIndex = 3; }, 500);
+        }
+        function tutupP3() {
+            p3.style.zIndex = 1;
+            p3.classList.remove("flipped");
+        }
+    </script>
+</body>
+</html>

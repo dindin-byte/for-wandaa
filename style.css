@@ -1,0 +1,63 @@
+body {
+    background-color: #fce4ec; /* Warna latar belakang lembut */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.book-container {
+    perspective: 1000px;
+}
+
+.book {
+    width: 350px;
+    height: 450px;
+    position: relative;
+    transform-style: preserve-3d;
+}
+
+.page {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transform-origin: left;
+    transition: transform 0.8s ease-in-out;
+    backface-visibility: hidden;
+    border: 2px solid #f8bbd0;
+}
+
+.cover {
+    background: #f48fb1; /* Warna sampul pink */
+    color: white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.cover button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: white;
+    color: #f48fb1;
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.cover button:hover {
+    background: #fce4ec;
+}
